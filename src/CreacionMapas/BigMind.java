@@ -111,7 +111,6 @@ public class BigMind extends JFrame implements Runnable {
         // Creamos el mundo 3D
         rootBG.addChild(crearMundo());
 
-
         // Elementos por defecto de la escena
         String rutaFondo = System.getProperty("user.dir") + "/" + "src/resources/texturas/textura_cielo.jpg";
         String rutaSonido = "file://localhost/" + System.getProperty("user.dir") + "/" + "src/resources/sonido/magic_bells.wav";
