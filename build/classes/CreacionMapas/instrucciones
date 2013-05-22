@@ -1,0 +1,18 @@
+Comandos para la creacion de un mapa
+// Comandos generales
+rotX45/rotY45/rotZ45/
+e1 --> hacer referencia a la escala del objeto
+obj_carpeta_archivo--> cuando queremos introducir un obj hay que poner esto
+
+// Comandos para posicionamiento manual
+posX45/posY45/posZ45/
+
+
+Nota: tanto para el posicionamiento automatico, es decir, cuando no ponemos posX o 
+posY o posZ como para el automatico hay que poner cada vez que se vaya a una fila
+hay que poner al final de dicha fila "final" y despues en la siguiente columna "|".
+
+Nota: no es necesario poner las rotaciones o posiciones en todos los ejes, basta
+con poner rotX90 si solo queremos que el objeto se rote 90 grados en X o 
+posX-5 si queremos que el objeto se situe en -5, en cuanto al resto de parametros
+los cuales no se indiquen valdran 0 o null.
