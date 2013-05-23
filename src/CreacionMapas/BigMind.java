@@ -15,6 +15,7 @@ import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSolver;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import figuras.BoxMDL;
+import figuras.EsferaMDL;
 import figuras.Personaje;
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -59,6 +60,7 @@ public class BigMind extends JFrame implements Runnable {
     DiscreteDynamicsWorld mundoFisico;
     BranchGroup conjunto;
     Figura personaje;
+    boolean actualizandoFisicas;
     // Constantes
     final String NO_EXISTE = "archivo no existente";
     final Float ESPACIO_Z = 3.0f; // espacio en el eje z entre los objetos
@@ -91,7 +93,7 @@ public class BigMind extends JFrame implements Runnable {
         setVisible(true);
 
         MiLibreria3D.addMovimientoCamara(universo, dibujo3D);
-        MiLibreria3D.colocarCamara(universo, new Point3d(0, 2, 5), new Point3d(0, 0, 0));
+        MiLibreria3D.colocarCamara(universo, new Point3d(-15, 10, 18), new Point3d(0, 0, 0));
 
         hebra.start();
     }
@@ -125,12 +127,12 @@ public class BigMind extends JFrame implements Runnable {
 //                    null,
 //                    1.0f));
             float radio = 6;
-                        float masaConstruccion = 0;
-                        float elasticidad = 0.3f;           //Capacidad de rebotar. 1 para grandes rebote   0 para simular gotas de liquidos espesos
-                        float dumpingLineal = 0.99f;    //Perdidad de velodidad al desplazarse (friccion del aire): 0 para mantener velocidad. 0.99 para perder velocidad (liquidos espesos)
+            float masaConstruccion = 0;
+            float elasticidad = 0.3f;           //Capacidad de rebotar. 1 para grandes rebote   0 para simular gotas de liquidos espesos
+            float dumpingLineal = 0.99f;    //Perdidad de velodidad al desplazarse (friccion del aire): 0 para mantener velocidad. 0.99 para perder velocidad (liquidos espesos)
 
-                        Figura construccion = new BoxMDL("objetosMDL/Iron_Golem.mdl", 20.0f, 1.0f, 20.0f, conjunto, listaObjetosFisicos, this, "texturas//ladrillo.jpg");
-                        construccion.crearPropiedades(masaConstruccion, elasticidad, dumpingLineal, 0.0f, -1.0f, 0.0f,mundoFisico);
+            Figura construccion = new BoxMDL("objetosMDL/Iron_Golem.mdl", 20.0f, 1.0f, 20.0f, conjunto, listaObjetosFisicos, this, "texturas//ladrillo.jpg", false);
+            construccion.crearPropiedades(masaConstruccion, elasticidad, dumpingLineal, 0.0f, -1.0f, 0.0f, mundoFisico);
         } catch (Exception ex) {
             Logger.getLogger(BigMind.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -151,6 +153,10 @@ public class BigMind extends JFrame implements Runnable {
         personaje = new Personaje(radio, conjunto, listaObjetosFisicos, this, true);
         personaje.crearPropiedades(masa, elasticidad, 0.5f, posX, posY, posZ, mundoFisico);
         personaje.cuerpoRigido.setDamping(0.7f, 0.9f);
+        
+        //--------
+        HebraCreadora creadora = new HebraCreadora(70, 0.9f, conjunto, listaObjetosFisicos, false, this, mundoFisico);
+            creadora.start();
     }
 
     void actualizar(float dt) {
@@ -184,12 +190,13 @@ public class BigMind extends JFrame implements Runnable {
         }
 
         //ACTUALIZAR DATOS DE LOCALIZACION DE FIGURAS FISICAS
-
+        this.actualizandoFisicas = true;
         try {
             mundoFisico.stepSimulation(dt);    //mundoFisico.stepSimulation ( dt  ,50000, dt*0.2f);
         } catch (Exception e) {
             System.out.println("JBullet forzado. No debe crearPropiedades de solidoRigidos durante la actualizacion stepSimulation");
         }
+        this.actualizandoFisicas = false;
     }
 
     void mostrar() throws Exception {
@@ -278,9 +285,9 @@ public class BigMind extends JFrame implements Runnable {
             float ancho = 0.5f;
             float largo = 0.5f;
             float alto = 0.1f;
-            float posInicialX = 0.0f;
+            float posInicialX = -13.0f;
             float posInicialY = 0.0f;
-            float posInicialZ = 0.0f;
+            float posInicialZ = -14.0f;
             float posSiguienteX = posInicialX;
             float posSiguienteY = posInicialY;
             float posSiguienteZ = posInicialZ;
@@ -401,13 +408,13 @@ public class BigMind extends JFrame implements Runnable {
                         Vector3f posicion;
                         // Si el posicionamiento no es manual situamos el objeto en la posicion
                         // siguiente situandolo al lado del anterior objeto
-                        if (posManual
-                                == null) {
+                        if (posManual == null) {
                             posicion = new Vector3f(posAnteriorX, posAnteriorY, (posSiguienteZ + (largo * escala)));
                         } else {
                             posicion = new Vector3f(posManual[0] + (ancho * escala), posManual[1] + (alto * escala), posManual[2] + (largo * escala));
                         }
                         // Lo introducimos dentro del arbol y lo trasladamos al lugar correcto
+                        // Esto seria para objetos no fisicos
 //                        mundoBG.addChild(
 //                                MiLibreria3D.trasladarEstatico(
 //                                MiLibreria3D.rotarEstatico(
@@ -422,13 +429,17 @@ public class BigMind extends JFrame implements Runnable {
 //                                grados[1], transformacion[1]),
 //                                grados[2], transformacion[2]),
 //                                posicion));
-                        
+
                         float masaConstruccion = 0;
                         float elasticidad = 0.3f;           //Capacidad de rebotar. 1 para grandes rebote   0 para simular gotas de liquidos espesos
                         float dumpingLineal = 0.99f;    //Perdidad de velodidad al desplazarse (friccion del aire): 0 para mantener velocidad. 0.99 para perder velocidad (liquidos espesos)
 
-                        Figura construccion = new BoxMDL("objetosMDL/Iron_Golem.mdl", ancho, alto, largo, conjunto, listaObjetosFisicos, this, "src/resources/texturas/textura_hielo.jpg");
-                        construccion.crearPropiedades(masaConstruccion, elasticidad, dumpingLineal, posicion.x+ancho/2,posicion.y+alto/2,posicion.z+largo/2,mundoFisico);
+                        ancho = ancho * escala;
+                        alto = alto * escala;
+                        largo = largo * escala;
+                        System.out.println("POSICION FIGURA:" + posicion.x);
+                        Figura construccion = new BoxMDL("objetosMDL/Iron_Golem.mdl", ancho, alto, largo, conjunto, listaObjetosFisicos, this, "src/resources/texturas/textura_hielo.jpg", false);
+                        construccion.crearPropiedades(masaConstruccion, elasticidad, dumpingLineal, posicion.x, posicion.y, posicion.z, mundoFisico);
 
                         // Actualizamos la posicion siguiente
                         posSiguienteX = posAnteriorX + ancho * escala;
@@ -535,26 +546,26 @@ public class BigMind extends JFrame implements Runnable {
                         }
 
                         // Lo introducimos dentro del arbol y lo trasladamos al lugar correcto
-//                        mundoBG.addChild(MiLibreria3D.trasladarEstatico(
-//                                MiLibreria3D.rotarEstatico(
-//                                MiLibreria3D.rotarEstatico(
-//                                MiLibreria3D.rotarEstatico(
-//                                MiLibreria3D.crear(new Vector3f(0.0f, 0.0f, 0.0f),
-//                                MiLibreria3D.tipoFigura.objetoOBJ, null, null, null,
-//                                null,
-//                                System.getProperty("user.dir") + "/" + "src/resources/objetosOBJ/" + carpeta + "/" + archivo + ".obj",
-//                                escala),
-//                                grados[0], transformacion[0]),
-//                                grados[1], transformacion[1]),
-//                                grados[2], transformacion[2]),
-//                                posicion));
+                        mundoBG.addChild(MiLibreria3D.trasladarEstatico(
+                                MiLibreria3D.rotarEstatico(
+                                MiLibreria3D.rotarEstatico(
+                                MiLibreria3D.rotarEstatico(
+                                MiLibreria3D.crear(new Vector3f(0.0f, 0.0f, 0.0f),
+                                MiLibreria3D.tipoFigura.objetoOBJ, null, null, null,
+                                null,
+                                System.getProperty("user.dir") + "/" + "src/resources/objetosOBJ/" + carpeta + "/" + archivo + ".obj",
+                                escala),
+                                grados[0], transformacion[0]),
+                                grados[1], transformacion[1]),
+                                grados[2], transformacion[2]),
+                                posicion));
 
-                        float masaConstruccion = 0;
-                        float elasticidad = 0.3f;           //Capacidad de rebotar. 1 para grandes rebote   0 para simular gotas de liquidos espesos
-                        float dumpingLineal = 0.99f;    //Perdidad de velodidad al desplazarse (friccion del aire): 0 para mantener velocidad. 0.99 para perder velocidad (liquidos espesos)
-
-                        Figura construccion = new BoxMDL("objetosMDL/Iron_Golem.mdl", 1, 1, 1, conjunto, listaObjetosFisicos, this, "src/resources/texturas/ladrillo.jpg");
-                        construccion.crearPropiedades(masaConstruccion, elasticidad, dumpingLineal, posicion.x,posicion.y,posicion.z,mundoFisico);
+//                        float masaConstruccion = 0;
+//                        float elasticidad = 0.3f;           //Capacidad de rebotar. 1 para grandes rebote   0 para simular gotas de liquidos espesos
+//                        float dumpingLineal = 0.99f;    //Perdidad de velodidad al desplazarse (friccion del aire): 0 para mantener velocidad. 0.99 para perder velocidad (liquidos espesos)
+//
+//                        Figura construccion = new BoxMDL("objetosMDL/Iron_Golem.mdl", 1, 1, 1, conjunto, listaObjetosFisicos, this, "src/resources/texturas/ladrillo.jpg",false);
+//                        construccion.crearPropiedades(masaConstruccion, elasticidad, dumpingLineal, posicion.x, posicion.y, posicion.z, mundoFisico);
 
                         // Actualizamos la posicion siguiente
                         posSiguienteX = posAnteriorX + ancho * escala;
@@ -571,5 +582,51 @@ public class BigMind extends JFrame implements Runnable {
         }
 
         return mundoBG;
+    }
+
+    class HebraCreadora extends Thread {
+
+        final BranchGroup conjunto;
+        final ArrayList<CreacionMapas.Figura> listaObjetosFisicos;
+        DiscreteDynamicsWorld mundoFisico = null;
+        final BigMind juego;
+        int maxEsferas;
+        boolean mdl;
+        float radio;
+
+        public HebraCreadora(int maxEsferas, float radio, BranchGroup conjunto, ArrayList<CreacionMapas.Figura> listaObjetosFisicos, boolean mdl, BigMind j, DiscreteDynamicsWorld mundoFisico) {
+            this.conjunto = conjunto;
+            this.listaObjetosFisicos = listaObjetosFisicos;
+            this.mundoFisico = mundoFisico;
+            this.juego = j;
+            this.maxEsferas = maxEsferas;
+            this.mdl = mdl;
+            this.radio = radio;
+        }
+
+        public void run() {
+            int numEsferas = 0;
+            try {
+                Thread.sleep(10);
+            } catch (Exception e) {
+            }
+//            while (numEsferas <= maxEsferas) {
+                float elasticidad = 0.5f;
+                float dumpingLineal = 0.5f;
+                float masa = 5;
+//                for (float x = 3; x >= -3; x = x - 2f) {
+//                    numEsferas++;
+                    Figura fig;
+                    fig = new EsferaMDL("src/resources/objetosOBJ/ataques/war_axe.obj", radio, conjunto, listaObjetosFisicos, juego);
+                    if (!juego.actualizandoFisicas) {
+                        fig.crearPropiedades(masa, elasticidad, dumpingLineal, -2, 5, -2, mundoFisico);
+                    }
+//                }
+//                try {
+//                    Thread.sleep(2000);
+//                } catch (Exception e) {
+//                }
+//            }
+        }
     }
 }

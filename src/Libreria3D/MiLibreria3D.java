@@ -182,7 +182,7 @@ public class MiLibreria3D {
         return objetoBG;
     }
 
-    private static Scene getOBJ(String urlObjeto) {
+    public static Scene getOBJ(String urlObjeto) {
         // Creando un objeto OBJ
         ObjectFile file = new ObjectFile(ObjectFile.RESIZE);
         Scene scene = null;

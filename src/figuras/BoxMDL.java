@@ -23,6 +23,7 @@ import net.sf.nwn.loader.AnimationBehavior;
 import net.sf.nwn.loader.NWNLoader;
 import CreacionMapas.Figura;
 import CreacionMapas.BigMind;
+import javax.media.j3d.Node;
 import utilidades.CapabilitiesMDL;
 
 /**
@@ -35,10 +36,10 @@ public class BoxMDL extends Figura {
     public AnimationBehavior ab = null;
     public String nombreAnimacionCorriendo, nombreAnimacionCaminando, nombreAnimacionQuieto, nombreAnimacionLuchando;
     Vector3d direccion = new Vector3d(0, 0, 10);
-    public float  alturaP, alturaDeOjos;
+    public float alturaP, alturaDeOjos;
     public float ancho, alto, largo;
 
-    public BoxMDL(String ficheroMDL, float ancho, float alto, float largo, BranchGroup conjunto, ArrayList<Figura> listaObjetos, BigMind juego, String textura) {
+    public BoxMDL(String ficheroMDL, float ancho, float alto, float largo, BranchGroup conjunto, ArrayList<Figura> listaObjetos, BigMind juego, String textura, boolean mostrarMDL) {
         super(conjunto, listaObjetos, juego);
         esMDL = true;
         //Variables del objeto no visualizado
@@ -55,20 +56,17 @@ public class BoxMDL extends Figura {
 
         //Creacion de la forma visual MDL
         //nombre = "figura_MDL_" + identificador;
-        Box figuraVisual = new Box(ancho,alto,largo,apariencia);
-//        TransformGroup figuraVisual = crearObjetoMDL(ficheroMDL, radio * 2);
-        BoxShape figuraFisica = new BoxShape(new Vector3f(ancho,alto,largo));
+        BoxShape figuraFisica = new BoxShape(new Vector3f(ancho, alto, largo));
         ramaFisica = new CollisionObject();
         ramaFisica.setCollisionShape(figuraFisica);
         ramaVisible.addChild(desplazamientoFigura);
+        Node figuraVisual;
+        if (!mostrarMDL) {
+            figuraVisual = new Box(ancho, alto, largo, apariencia);
+        } else {
+            figuraVisual = crearObjetoMDL(ficheroMDL, ancho * 2);
+        }
         desplazamientoFigura.addChild(figuraVisual);
-
-        //Creaci�n de detector de teclas asociado a este cono
-//        if (esPersonaje) {
-//            DeteccionControlPersonaje mueve = new DeteccionControlPersonaje(this);
-//            mueve.setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
-//            ramaVisible.addChild(mueve);
-//        }
     }
 
     TransformGroup crearObjetoMDL(String archivo, float multiplicadorEscala) {
@@ -153,4 +151,3 @@ public class BoxMDL extends Figura {
         return rotadorDeFIguraMDL;
     }
 }
-
