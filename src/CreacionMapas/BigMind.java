@@ -14,6 +14,7 @@ import com.bulletphysics.dynamics.DiscreteDynamicsWorld;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSolver;
 import com.sun.j3d.utils.universe.SimpleUniverse;
+import figuras.BoxMDL;
 import figuras.Personaje;
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -118,11 +119,18 @@ public class BigMind extends JFrame implements Runnable {
         MiLibreria3D.setBackground(rootBG, rutaFondo, this, 1);
 //        MiLibreria3D.addSound(universo, rootBG, rutaSonido);
         try {
-            rootBG.addChild(MiLibreria3D.crear(new Vector3f(0.0f, -1.0f, 0.0f),
-                    MiLibreria3D.tipoFigura.rectangulo, 20.0f, 1.0f, 20.0f,
-                    MiLibreria3D.getTexture(rutaSuelo, this),
-                    null,
-                    1.0f));
+//            rootBG.addChild(MiLibreria3D.crear(new Vector3f(0.0f, -1.0f, 0.0f),
+//                    MiLibreria3D.tipoFigura.rectangulo, 20.0f, 1.0f, 20.0f,
+//                    MiLibreria3D.getTexture(rutaSuelo, this),
+//                    null,
+//                    1.0f));
+            float radio = 6;
+                        float masaConstruccion = 0;
+                        float elasticidad = 0.3f;           //Capacidad de rebotar. 1 para grandes rebote   0 para simular gotas de liquidos espesos
+                        float dumpingLineal = 0.99f;    //Perdidad de velodidad al desplazarse (friccion del aire): 0 para mantener velocidad. 0.99 para perder velocidad (liquidos espesos)
+
+                        Figura construccion = new BoxMDL("objetosMDL/Iron_Golem.mdl", 20.0f, 1.0f, 20.0f, conjunto, listaObjetosFisicos, this, "texturas//ladrillo.jpg");
+                        construccion.crearPropiedades(masaConstruccion, elasticidad, dumpingLineal, 0.0f, -1.0f, 0.0f,mundoFisico);
         } catch (Exception ex) {
             Logger.getLogger(BigMind.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -135,7 +143,7 @@ public class BigMind extends JFrame implements Runnable {
     void cargarContenido() {
         //Creando el personaje del juego, controlado por teclado. Tambien se pudo haber creado en CrearEscena()
         float masa = 1f;
-        float radio = 0.25f;
+        float radio = 1.1f;
         float posX = 5f;
         float posY = 5f, posZ = 0f;
         float elasticidad = 0.5f;
@@ -400,21 +408,27 @@ public class BigMind extends JFrame implements Runnable {
                             posicion = new Vector3f(posManual[0] + (ancho * escala), posManual[1] + (alto * escala), posManual[2] + (largo * escala));
                         }
                         // Lo introducimos dentro del arbol y lo trasladamos al lugar correcto
+//                        mundoBG.addChild(
+//                                MiLibreria3D.trasladarEstatico(
+//                                MiLibreria3D.rotarEstatico(
+//                                MiLibreria3D.rotarEstatico(
+//                                MiLibreria3D.rotarEstatico(
+//                                MiLibreria3D.crear(new Vector3f(0.0f, 0.0f, 0.0f),
+//                                tipoFigura, ancho, alto, largo,
+//                                apariencia,
+//                                null,
+//                                escala),
+//                                grados[0], transformacion[0]),
+//                                grados[1], transformacion[1]),
+//                                grados[2], transformacion[2]),
+//                                posicion));
+                        
+                        float masaConstruccion = 0;
+                        float elasticidad = 0.3f;           //Capacidad de rebotar. 1 para grandes rebote   0 para simular gotas de liquidos espesos
+                        float dumpingLineal = 0.99f;    //Perdidad de velodidad al desplazarse (friccion del aire): 0 para mantener velocidad. 0.99 para perder velocidad (liquidos espesos)
 
-                        mundoBG.addChild(
-                                MiLibreria3D.trasladarEstatico(
-                                MiLibreria3D.rotarEstatico(
-                                MiLibreria3D.rotarEstatico(
-                                MiLibreria3D.rotarEstatico(
-                                MiLibreria3D.crear(new Vector3f(0.0f, 0.0f, 0.0f),
-                                tipoFigura, ancho, alto, largo,
-                                apariencia,
-                                null,
-                                escala),
-                                grados[0], transformacion[0]),
-                                grados[1], transformacion[1]),
-                                grados[2], transformacion[2]),
-                                posicion));
+                        Figura construccion = new BoxMDL("objetosMDL/Iron_Golem.mdl", ancho, alto, largo, conjunto, listaObjetosFisicos, this, "src/resources/texturas/textura_hielo.jpg");
+                        construccion.crearPropiedades(masaConstruccion, elasticidad, dumpingLineal, posicion.x+ancho/2,posicion.y+alto/2,posicion.z+largo/2,mundoFisico);
 
                         // Actualizamos la posicion siguiente
                         posSiguienteX = posAnteriorX + ancho * escala;
@@ -521,19 +535,26 @@ public class BigMind extends JFrame implements Runnable {
                         }
 
                         // Lo introducimos dentro del arbol y lo trasladamos al lugar correcto
-                        mundoBG.addChild(MiLibreria3D.trasladarEstatico(
-                                MiLibreria3D.rotarEstatico(
-                                MiLibreria3D.rotarEstatico(
-                                MiLibreria3D.rotarEstatico(
-                                MiLibreria3D.crear(new Vector3f(0.0f, 0.0f, 0.0f),
-                                MiLibreria3D.tipoFigura.objetoOBJ, null, null, null,
-                                null,
-                                System.getProperty("user.dir") + "/" + "src/resources/objetosOBJ/" + carpeta + "/" + archivo + ".obj",
-                                escala),
-                                grados[0], transformacion[0]),
-                                grados[1], transformacion[1]),
-                                grados[2], transformacion[2]),
-                                posicion));
+//                        mundoBG.addChild(MiLibreria3D.trasladarEstatico(
+//                                MiLibreria3D.rotarEstatico(
+//                                MiLibreria3D.rotarEstatico(
+//                                MiLibreria3D.rotarEstatico(
+//                                MiLibreria3D.crear(new Vector3f(0.0f, 0.0f, 0.0f),
+//                                MiLibreria3D.tipoFigura.objetoOBJ, null, null, null,
+//                                null,
+//                                System.getProperty("user.dir") + "/" + "src/resources/objetosOBJ/" + carpeta + "/" + archivo + ".obj",
+//                                escala),
+//                                grados[0], transformacion[0]),
+//                                grados[1], transformacion[1]),
+//                                grados[2], transformacion[2]),
+//                                posicion));
+
+                        float masaConstruccion = 0;
+                        float elasticidad = 0.3f;           //Capacidad de rebotar. 1 para grandes rebote   0 para simular gotas de liquidos espesos
+                        float dumpingLineal = 0.99f;    //Perdidad de velodidad al desplazarse (friccion del aire): 0 para mantener velocidad. 0.99 para perder velocidad (liquidos espesos)
+
+                        Figura construccion = new BoxMDL("objetosMDL/Iron_Golem.mdl", 1, 1, 1, conjunto, listaObjetosFisicos, this, "src/resources/texturas/ladrillo.jpg");
+                        construccion.crearPropiedades(masaConstruccion, elasticidad, dumpingLineal, posicion.x,posicion.y,posicion.z,mundoFisico);
 
                         // Actualizamos la posicion siguiente
                         posSiguienteX = posAnteriorX + ancho * escala;
