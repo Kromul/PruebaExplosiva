@@ -33,7 +33,9 @@ public class DeteccionControlPersonaje extends javax.media.j3d.Behavior {
                     if (events[n] instanceof KeyEvent) {
                         KeyEvent ek = (KeyEvent) events[n];
                         if (ek.getID() == KeyEvent.KEY_PRESSED) {
-                            if (ek.getKeyChar() == 'w') {
+                            if (ek.getKeyCode() == KeyEvent.VK_SHIFT) {
+                                personaje.corriendo = true;
+                            } else if (ek.getKeyChar() == 'w') {
                                 personaje.adelante = true;
                             } else if (ek.getKeyChar() == 'a') {
                                 personaje.izquierda = true;
@@ -43,7 +45,9 @@ public class DeteccionControlPersonaje extends javax.media.j3d.Behavior {
                                 personaje.atras = true;
                             }
                         } else if (ek.getID() == KeyEvent.KEY_RELEASED) {
-                            if (ek.getKeyChar() == 'w') {
+                            if (ek.getKeyCode() == KeyEvent.VK_SHIFT) {
+                                personaje.corriendo = false;
+                            } else if (ek.getKeyChar() == 'w') {
                                 personaje.adelante = false;
                             } else if (ek.getKeyChar() == 'a') {
                                 personaje.izquierda = false;
