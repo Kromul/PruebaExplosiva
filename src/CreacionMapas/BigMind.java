@@ -167,16 +167,29 @@ public class BigMind extends JFrame implements Runnable {
         if (personaje != null) {
             float fuerzaElevacion = 0, fuerzaLateral = 0;
             if (personaje.adelante) {
+                //personaje.rotarAdelante();
                 fuerzaElevacion = personaje.masa * 2f * 2.5f;
             }
             if (personaje.atras) {
                 fuerzaElevacion = -personaje.masa * 2f * 2.5f;
+                /*
+                 personaje.rotarAtras();
+                 fuerzaElevacion = personaje.masa * 2f * 2.5f;
+                 */
             }
             if (personaje.derecha) {
                 fuerzaLateral = -personaje.masa * 4f;
+                /*
+                 personaje.rotarDerecha();
+                 fuerzaElevacion = personaje.masa * 2f * 2.5f;
+                 */
             }
             if (personaje.izquierda) {
                 fuerzaLateral = personaje.masa * 4f;
+                /*
+                 personaje.rotarIzquierda();
+                 fuerzaElevacion = personaje.masa * 2f * 2.5f;
+                 */
             }
 
             Vector3d direccionFrente = personaje.conseguirDireccionFrontal();
