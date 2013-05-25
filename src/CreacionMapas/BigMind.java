@@ -167,10 +167,10 @@ public class BigMind extends JFrame implements Runnable {
         if (personaje != null) {
             float fuerzaElevacion = 0, fuerzaLateral = 0;
             if (personaje.adelante) {
-                fuerzaElevacion = personaje.masa * 10f * 2.5f;
+                fuerzaElevacion = personaje.masa * 2f * 2.5f;
             }
             if (personaje.atras) {
-                fuerzaElevacion = -personaje.masa * 10f * 2.5f;
+                fuerzaElevacion = -personaje.masa * 2f * 2.5f;
             }
             if (personaje.derecha) {
                 fuerzaLateral = -personaje.masa * 4f;
@@ -215,6 +215,7 @@ public class BigMind extends JFrame implements Runnable {
             }
         } catch (Exception e) {
         }
+        //MOSTRAR CÁMARA
         Point3d objetivo = new Point3d(personaje.posiciones[0], personaje.posiciones[1], personaje.posiciones[2]);
         Point3d posicion = new Point3d(personaje.posiciones[0], personaje.posiciones[1] + 5, personaje.posiciones[2] + 10.3);
         colocarCamaraDinamico(posicion, objetivo);
