@@ -1,6 +1,5 @@
 package CreacionMapas;
 
-import CreacionMapas.BigMind;
 import java.util.Enumeration;
 import javax.media.j3d.Behavior;
 import javax.media.j3d.WakeupOnElapsedFrames;

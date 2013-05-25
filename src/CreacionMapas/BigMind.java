@@ -145,7 +145,7 @@ public class BigMind extends JFrame implements Runnable {
     void cargarContenido() {
         //Creando el personaje del juego, controlado por teclado. Tambien se pudo haber creado en CrearEscena()
         float masa = 1f;
-        float radio = 1.1f;
+        float radio = 0.25f;
         float posX = 5f;
         float posY = 5f, posZ = 0f;
         float elasticidad = 0.5f;
@@ -153,10 +153,10 @@ public class BigMind extends JFrame implements Runnable {
         personaje = new Personaje(radio, conjunto, listaObjetosFisicos, this, true);
         personaje.crearPropiedades(masa, elasticidad, 0.5f, posX, posY, posZ, mundoFisico);
         personaje.cuerpoRigido.setDamping(0.7f, 0.9f);
-        
+
         //--------
         HebraCreadora creadora = new HebraCreadora(70, 0.9f, conjunto, listaObjetosFisicos, false, this, mundoFisico);
-            creadora.start();
+        creadora.start();
     }
 
     void actualizar(float dt) {
@@ -215,6 +215,9 @@ public class BigMind extends JFrame implements Runnable {
             }
         } catch (Exception e) {
         }
+        Point3d objetivo = new Point3d(personaje.posiciones[0], personaje.posiciones[1], personaje.posiciones[2]);
+        Point3d posicion = new Point3d(personaje.posiciones[0], personaje.posiciones[1] + 5, personaje.posiciones[2] + 10.3);
+        colocarCamaraDinamico(posicion, objetivo);
     }
 
     public void run() {
@@ -611,16 +614,16 @@ public class BigMind extends JFrame implements Runnable {
             } catch (Exception e) {
             }
 //            while (numEsferas <= maxEsferas) {
-                float elasticidad = 0.5f;
-                float dumpingLineal = 0.5f;
-                float masa = 5;
+            float elasticidad = 0.5f;
+            float dumpingLineal = 0.5f;
+            float masa = 5;
 //                for (float x = 3; x >= -3; x = x - 2f) {
 //                    numEsferas++;
-                    Figura fig;
-                    fig = new EsferaMDL("src/resources/objetosOBJ/ataques/war_axe.obj", radio, conjunto, listaObjetosFisicos, juego);
-                    if (!juego.actualizandoFisicas) {
-                        fig.crearPropiedades(masa, elasticidad, dumpingLineal, -2, 5, -2, mundoFisico);
-                    }
+            Figura fig;
+            fig = new EsferaMDL("src/resources/objetosOBJ/ataques/war_axe.obj", radio, conjunto, listaObjetosFisicos, juego);
+            if (!juego.actualizandoFisicas) {
+                fig.crearPropiedades(masa, elasticidad, dumpingLineal, -2, 5, -2, mundoFisico);
+            }
 //                }
 //                try {
 //                    Thread.sleep(2000);
