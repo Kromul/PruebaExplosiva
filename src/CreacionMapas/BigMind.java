@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package CreacionMapas;
 
 import Libreria3D.MiLibreria3D;
@@ -194,10 +190,11 @@ public class BigMind extends JFrame implements Runnable {
             if (personaje.corriendo) {
                 fuerzaElevacion *= 2;
             }
-
-            Vector3d direccionFrente = personaje.conseguirDireccionFrontal();
-            personaje.cuerpoRigido.applyCentralForce(new Vector3f((float) direccionFrente.x * fuerzaElevacion * 0.1f, 0, (float) direccionFrente.z * fuerzaElevacion * 0.1f));
-            personaje.cuerpoRigido.applyTorque(new Vector3f(0, fuerzaLateral, 0));
+            if (!personaje.parar) {
+                Vector3d direccionFrente = personaje.conseguirDireccionFrontal();
+                personaje.cuerpoRigido.applyCentralForce(new Vector3f((float) direccionFrente.x * fuerzaElevacion * 0.1f, 0, (float) direccionFrente.z * fuerzaElevacion * 0.1f));
+                personaje.cuerpoRigido.applyTorque(new Vector3f(0, fuerzaLateral, 0));
+            }
         }
 
         //ACTUALIZAR DATOS DE FUERZAS DE LAS FIGURAS AUTONOMAS  (ej. para que cada figura pueda persiguir su objetivo)

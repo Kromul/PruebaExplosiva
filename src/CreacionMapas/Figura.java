@@ -33,6 +33,7 @@ public class Figura {
     //Si ademas, hubiera que realizar uan accion particular (ej. Dispararle, darle alimento) se necesitaria otro atributo (ej. TareaObjetivo)
     float aceleracionMuscular;
     String direccion = "atras";
+    public boolean parar = true;
 
     public Figura(BranchGroup conjunto, ArrayList<Figura> listaObjetosFisicos, BigMind juego) {
         this.listaObjetosFisicos = listaObjetosFisicos;
@@ -166,44 +167,44 @@ public class Figura {
 
     void rotarAdelante() {
         if (this.direccion.equals("atras")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 400, 0f));
+            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 4000, 0f));
         } else if (this.direccion.equals("izquierda")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, -this.masa * 100, 0f));
+            this.cuerpoRigido.applyTorque(new Vector3f(0f, -this.masa * 1000, 0f));
         } else if (this.direccion.equals("derecha")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 100, 0f));
+            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 1000, 0f));
         }
         this.direccion = "adelante";
     }
 
     void rotarAtras() {
         if (this.direccion.equals("adelante")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 400, 0f));
+            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 4000, 0f));
         } else if (this.direccion.equals("izquierda")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 100, 0f));
+            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 1000, 0f));
         } else if (this.direccion.equals("derecha")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, -this.masa * 100, 0f));
+            this.cuerpoRigido.applyTorque(new Vector3f(0f, -this.masa * 1000, 0f));
         }
         this.direccion = "atras";
     }
 
     void rotarDerecha() {
         if (this.direccion.equals("atras")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 100, 0f));
+            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 1000, 0f));
         } else if (this.direccion.equals("izquierda")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 400, 0f));
+            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 4000, 0f));
         } else if (this.direccion.equals("adelante")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, -this.masa * 100, 0f));
+            this.cuerpoRigido.applyTorque(new Vector3f(0f, -this.masa * 1000, 0f));
         }
         this.direccion = "derecha";
     }
 
     void rotarIzquierda() {
         if (this.direccion.equals("atras")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, -this.masa * 100, 0f));
+            this.cuerpoRigido.applyTorque(new Vector3f(0f, -this.masa * 1000, 0f));
         } else if (this.direccion.equals("adelante")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 100, 0f));
+            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 1000, 0f));
         } else if (this.direccion.equals("derecha")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 400, 0f));
+            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 4000, 0f));
         }
         this.direccion = "izquierda";
     }
