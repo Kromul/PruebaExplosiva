@@ -1,5 +1,7 @@
 package CreacionMapas;
 
+import Libreria3D.MiLibreria3D;
+import Libreria3D.MiLibreria3D;
 import javax.media.j3d.*;
 import javax.vecmath.*;
 import java.util.ArrayList;
@@ -184,13 +186,21 @@ public class Figura {
     }
 
     void rotarIzquierda() {
+        Transform3D nueva = new Transform3D();
+        Transform3D actual = new Transform3D();
+        this.desplazamientoFigura.getTransform(actual);
         if (this.direccion.equals("atras")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, -this.masa * 1000, 0f));
+            nueva = MiLibreria3D.rotarDinamico(MiLibreria3D.tipoTrans.enY, -90);
+            //this.cuerpoRigido.applyTorqueImpulse(new Vector3f(0f, -this.masa * 4, 0f));
         } else if (this.direccion.equals("adelante")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 1000, 0f));
+            nueva = MiLibreria3D.rotarDinamico(MiLibreria3D.tipoTrans.enY, 90);
+            //this.cuerpoRigido.applyTorqueImpulse(new Vector3f(0f, this.masa * 4, 0f));
         } else if (this.direccion.equals("derecha")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 4000, 0f));
+            nueva = MiLibreria3D.rotarDinamico(MiLibreria3D.tipoTrans.enY, 180);
+            //this.cuerpoRigido.applyTorqueImpulse(new Vector3f(0f, this.masa * 8, 0f));
         }
+        nueva.mul(actual);
+        this.desplazamientoFigura.setTransform(nueva);
         this.direccion = "izquierda";
     }
 }

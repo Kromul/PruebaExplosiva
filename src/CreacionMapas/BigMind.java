@@ -181,11 +181,11 @@ public class BigMind extends JFrame implements Runnable {
                  */
             }
             if (personaje.izquierda) {
-                fuerzaLateral = personaje.masa * 4f;
-                /*
+                //fuerzaLateral = personaje.masa * 4f;
+                
                  personaje.rotarIzquierda();
                  fuerzaElevacion = personaje.masa * 2f * 2.5f;
-                 */
+                 
             }
             if (personaje.corriendo) {
                 fuerzaElevacion *= 2;
