@@ -194,6 +194,8 @@ public class BigMind extends JFrame implements Runnable {
                 Vector3d direccionFrente = personaje.conseguirDireccionFrontal();
                 personaje.cuerpoRigido.applyCentralForce(new Vector3f((float) direccionFrente.x * fuerzaElevacion * 0.1f, 0, (float) direccionFrente.z * fuerzaElevacion * 0.1f));
                 personaje.cuerpoRigido.applyTorque(new Vector3f(0, fuerzaLateral, 0));
+            } else {
+                personaje.cuerpoRigido.clearForces();
             }
         }
 
