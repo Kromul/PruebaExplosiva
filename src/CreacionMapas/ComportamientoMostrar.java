@@ -4,6 +4,9 @@ import java.util.Enumeration;
 import javax.media.j3d.Behavior;
 import javax.media.j3d.WakeupOnElapsedFrames;
 
+/**
+ * @author Alejandro Ruiz Moyano
+ */
 public class ComportamientoMostrar extends Behavior {
 
     WakeupOnElapsedFrames framewake = new WakeupOnElapsedFrames(0, true);

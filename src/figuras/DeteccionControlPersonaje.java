@@ -1,11 +1,14 @@
-package CreacionMapas;
+package figuras;
 
-import figuras.Personaje;
+import CreacionMapas.Figura;
 import java.awt.AWTEvent;
 import java.awt.event.KeyEvent;
 import java.util.Enumeration;
 import javax.media.j3d.*;
 
+/**
+ * @author Alejandro Ruiz Moyano
+ */
 public class DeteccionControlPersonaje extends javax.media.j3d.Behavior {
 
     Figura personaje;
@@ -65,7 +68,7 @@ public class DeteccionControlPersonaje extends javax.media.j3d.Behavior {
                             } else if (ek.getKeyChar() == 's') {
                                 personaje.atras = false;
                                 personaje.parar = true;
-                            }                 
+                            }
                         }
                     }
                 }

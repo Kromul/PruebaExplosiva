@@ -14,6 +14,9 @@ import javax.vecmath.*;
 import net.sf.nwn.loader.AnimationBehavior;
 import net.sf.nwn.loader.NWNLoader;
 
+/**
+ * @author Alejandro Ruiz Moyano
+ */
 public class EsferaMDL extends Figura {
 
     public Scene escenaPersonaje1;
@@ -21,7 +24,7 @@ public class EsferaMDL extends Figura {
     public String nombreAnimacionCorriendo, nombreAnimacionCaminando, nombreAnimacionQuieto, nombreAnimacionLuchando;
     Vector3d direccion = new Vector3d(0, 0, 10);
     public float radio, alturaP, alturaDeOjos;
-    
+
     public EsferaMDL(String ficheroMDL, float radio, BranchGroup conjunto, ArrayList<Figura> listaObjetos, BigMind juego) {
         super(conjunto, listaObjetos, juego);
         esMDL = true;
@@ -37,7 +40,7 @@ public class EsferaMDL extends Figura {
         Node figuraVisual = new Sphere(radio);
         figuraVisual = MiLibreria3D.rotarEstatico(
                 MiLibreria3D.getOBJ(System.getProperty("user.dir") + "/" + "src/resources/objetosOBJ/" + "naturaleza" + "/" + "asteroid" + ".obj").getSceneGroup(),
-                270,MiLibreria3D.tipoTrans.enZ);
+                270, MiLibreria3D.tipoTrans.enZ);
 //        TransformGroup figuraVisual = crearObjetoMDL(ficheroMDL, radio * 2);
         SphereShape figuraFisica = new SphereShape(radio);
         ramaFisica = new CollisionObject();

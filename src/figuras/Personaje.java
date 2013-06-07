@@ -1,6 +1,5 @@
 package figuras;
 
-import CreacionMapas.DeteccionControlPersonaje;
 import CreacionMapas.Figura;
 import CreacionMapas.BigMind;
 import utilidades.CapabilitiesMDL;
@@ -14,6 +13,9 @@ import javax.vecmath.*;
 import net.sf.nwn.loader.AnimationBehavior;
 import net.sf.nwn.loader.NWNLoader;
 
+/**
+ * @author Alejandro Ruiz Moyano
+ */
 public class Personaje extends Figura {
 
     public Scene escenaPersonaje;
@@ -22,6 +24,7 @@ public class Personaje extends Figura {
     Vector3d direccion = new Vector3d(0, 0, 10);
     public float radio, alturaP, alturaDeOjos;
     boolean esPersonaje;
+    SphereShape figuraFisica;
 
     public Personaje(float radio, BranchGroup conjunto, ArrayList<Figura> listaObjetos, BigMind juego, boolean esPersonaje) {
         super(conjunto, listaObjetos, juego);
@@ -31,7 +34,7 @@ public class Personaje extends Figura {
         //Creacion de la forma visual MDL
         //nombre = "figura_MDL_" + identificador;
         TransformGroup figuraVisual = crearObjetoMDL(radio * 2);
-        SphereShape figuraFisica = new SphereShape(radio);
+        figuraFisica = new SphereShape(radio);
         ramaFisica = new CollisionObject();
         ramaFisica.setCollisionShape(figuraFisica);
         ramaVisible.addChild(desplazamientoFigura);

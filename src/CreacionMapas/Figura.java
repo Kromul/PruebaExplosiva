@@ -7,6 +7,9 @@ import com.bulletphysics.collision.dispatch.*;
 import com.bulletphysics.dynamics.*;
 import com.bulletphysics.linearmath.*;
 
+/**
+ * @author Alejandro Ruiz Moyano
+ */
 public class Figura {
 
     public int identificadorFigura, identificadorFisico;
@@ -101,24 +104,6 @@ public class Figura {
             this.posiciones[1] = trans.origin.y;
             this.posiciones[2] = trans.origin.z;
         }
-    }
-
-    public void remover() {
-        /*
-         if (!juego.mostrandoFisicas) {
-         try {
-         mundoFisico.getCollisionObjectArray().remove(this.identificadorFisico);
-         mundoFisico.removeRigidBody(cuerpoRigido);
-         conjunto.removeChild(this.identificadorFigura);
-         for (int i = this.identificadorFigura + 1; i < this.listaObjetosFisicos.size(); i++) {
-         listaObjetosFisicos.get(i).identificadorFigura = listaObjetosFisicos.get(i).identificadorFigura - 1;
-         }
-         listaObjetosFisicos.remove(this.identificadorFigura);;
-         } catch (Exception e) {
-         System.out.println("Ya eliminado");
-         }
-         }
-         */
     }
 
     public void actualizar() {

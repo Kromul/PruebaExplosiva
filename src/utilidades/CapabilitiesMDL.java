@@ -15,6 +15,9 @@ import javax.media.j3d.TransformGroup;
 import com.sun.j3d.utils.picking.PickTool;
 import java.util.Enumeration;
 
+/**
+ * @author Alejandro Ruiz Moyano
+ */
 public class CapabilitiesMDL {
 
     String dd;
