@@ -51,17 +51,21 @@ public class BigMind extends JFrame implements Runnable {
     public Canvas3D zonaDibujo;
     TransformGroup TGcamara = new TransformGroup();
     Thread hebra = new Thread(this);
-    ArrayList<CreacionMapas.Figura> listaObjetosFisicos = new ArrayList<Figura>();
+    public ArrayList<CreacionMapas.Figura> listaObjetosFisicos = new ArrayList<Figura>();
+    ArrayList<FiguraInteligente> listaObjetosFisicosInteligentes = new ArrayList<FiguraInteligente>();
     ArrayList<CreacionMapas.Figura> listaObjetosNoFisicos = new ArrayList<Figura>();
     DiscreteDynamicsWorld mundoFisico;
     BranchGroup conjunto;
     Figura personaje;
-    boolean actualizandoFisicas;
+    public boolean actualizandoFisicas;
+    public boolean mostrandoFisicas;
     // Constantes
     final String NO_EXISTE = "archivo no existente";
     final Float ESPACIO_Z = 3.0f; // espacio en el eje z entre los objetos
     // Escena
     String matrixScene[][];
+    // Inteligencia Artificial
+    BalaInteligente bala;
 
     public BigMind() {
         CollisionConfiguration collisionConfiguration = new DefaultCollisionConfiguration();
@@ -134,6 +138,7 @@ public class BigMind extends JFrame implements Runnable {
         }
         rootBG.addChild(MiLibreria3D.CrearEjesCoordenada());
         rootBG.addChild(MiLibreria3D.getDefaultIlumination());
+        rootBG.addChild(MiLibreria3D.trasladarEstatico(MiLibreria3D.CrearEjesCoordenada(), new Vector3f(10f, 0f, 0f)));
 
         return rootBG;
     }
@@ -153,11 +158,18 @@ public class BigMind extends JFrame implements Runnable {
         //--------
         HebraCreadora creadora = new HebraCreadora(70, 0.9f, conjunto, listaObjetosFisicos, false, this, mundoFisico);
         creadora.start();
+
+        // Creamos el cañon
+        bala = new BalaInteligente(this, new Vector3f(0f, 1f, 10f));
     }
 
     void actualizar(float dt) {
         //ACTUALIZAR EL ESTADO DEL JUEGO
-
+//        try{
+        bala.actualizar(10, 10);
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
 
         //ACTUALIZAR DATOS DE FUERZAS DEL PERSONAJE CONTROLADO POR EL JUGADOR
         if (personaje != null) {
@@ -182,10 +194,10 @@ public class BigMind extends JFrame implements Runnable {
             }
             if (personaje.izquierda) {
                 //fuerzaLateral = personaje.masa * 4f;
-                
-                 personaje.rotarIzquierda();
-                 fuerzaElevacion = personaje.masa * 2f * 2.5f;
-                 
+
+                personaje.rotarIzquierda();
+                fuerzaElevacion = personaje.masa * 2f * 2.5f;
+
             }
             if (personaje.corriendo) {
                 fuerzaElevacion *= 2;
@@ -202,6 +214,10 @@ public class BigMind extends JFrame implements Runnable {
         //ACTUALIZAR DATOS DE FUERZAS DE LAS FIGURAS AUTONOMAS  (ej. para que cada figura pueda persiguir su objetivo)
         for (int i = 0; i < this.listaObjetosFisicos.size(); i++) {
             listaObjetosFisicos.get(i).actualizar();
+        }
+        // ACTUALIZO LA FIGURA INTELIGENTE
+        for (int i = 0; i < this.listaObjetosFisicosInteligentes.size(); i++) {
+            listaObjetosFisicosInteligentes.get(i).actualizar();
         }
 
         //ACTUALIZAR DATOS DE LOCALIZACION DE FIGURAS FISICAS
@@ -230,10 +246,27 @@ public class BigMind extends JFrame implements Runnable {
             }
         } catch (Exception e) {
         }
+
+        this.mostrandoFisicas = true;
+        try {
+            if ((mundoFisico.getCollisionObjectArray().size() != 0) && (listaObjetosFisicosInteligentes.size() != 0)) {
+                for (int idFigura = 0; idFigura <= this.listaObjetosFisicosInteligentes.size() - 1; idFigura++) {     // Actualizar posiciones fisicas y graficas de los objetos.
+                    try {
+                        int idFisico = listaObjetosFisicosInteligentes.get(idFigura).identificadorFisico;
+                        CollisionObject objeto = mundoFisico.getCollisionObjectArray().get(idFisico); //
+                        RigidBody cuerpoRigido = RigidBody.upcast(objeto);
+                        listaObjetosFisicosInteligentes.get(idFigura).mostrar(cuerpoRigido);
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+        this.mostrandoFisicas = false;
         //MOSTRAR CÁMARA
         Point3d objetivo = new Point3d(personaje.posiciones[0], personaje.posiciones[1], personaje.posiciones[2]);
-        Point3d posicion = new Point3d(personaje.posiciones[0], personaje.posiciones[1] + 5, personaje.posiciones[2] + 10.3);
-        colocarCamaraDinamico(posicion, objetivo);
+        Point3d posicion = new Point3d(personaje.posiciones[0], personaje.posiciones[1] + 5, -(personaje.posiciones[2] + 10.3));
+//        colocarCamaraDinamico(posicion, objetivo);
     }
 
     public void run() {
@@ -464,8 +497,7 @@ public class BigMind extends JFrame implements Runnable {
                         posSiguienteX = posAnteriorX + ancho * escala;
                         transformacion[0] = transformacion[1] = transformacion[2] = null;
                     }
-                } else if (elemento.contains(
-                        "obj")) {
+                } else if (elemento.contains("obj")) {
                     // Una vez que sabemos que es un OBJ vemos en que carpeta esta
                     // y que archivo debemos de coger
                     String carpeta = NO_EXISTE;
@@ -640,12 +672,6 @@ public class BigMind extends JFrame implements Runnable {
             if (!juego.actualizandoFisicas) {
                 fig.crearPropiedades(masa, elasticidad, dumpingLineal, -2, 5, -2, mundoFisico);
             }
-//                }
-//                try {
-//                    Thread.sleep(2000);
-//                } catch (Exception e) {
-//                }
-//            }
         }
     }
 }
