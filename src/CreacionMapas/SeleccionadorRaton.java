@@ -25,7 +25,8 @@ public class SeleccionadorRaton extends PickMouseBehavior {
         PickResult pickResult = pickCanvas.pickClosest();
         if (pickResult != null) {
             Node nd = pickResult.getObject();
-            System.out.println("PRUEBA SELECT:" + nd);
+            String nombre = nd.getName();
+            System.out.println("PRUEBA SELECT:" + nd + " con nombre " + nombre);
             /*
             if (nd.getName() != null) {
                

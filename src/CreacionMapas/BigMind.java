@@ -29,6 +29,7 @@ import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
+import javax.media.j3d.Node;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.swing.JFrame;
@@ -631,15 +632,17 @@ public class BigMind extends JFrame implements Runnable {
                             System.out.println("elemento: " + elemento + " clickable");
                         }
                         // Lo introducimos dentro del arbol y lo trasladamos al lugar correcto
+                        Node obj = MiLibreria3D.crear(new Vector3f(0.0f, 0.0f, 0.0f),
+                                MiLibreria3D.tipoFigura.objetoOBJ, null, null, null,
+                                null,
+                                System.getProperty("user.dir") + "/" + "src/resources/objetosOBJ/" + carpeta + "/" + archivo + ".obj",
+                                escala);
+                        obj.setName("obj");
                         mundoBG.addChild(MiLibreria3D.trasladarEstatico(
                                 MiLibreria3D.rotarEstatico(
                                 MiLibreria3D.rotarEstatico(
                                 MiLibreria3D.rotarEstatico(
-                                MiLibreria3D.crear(new Vector3f(0.0f, 0.0f, 0.0f),
-                                MiLibreria3D.tipoFigura.objetoOBJ, null, null, null,
-                                null,
-                                System.getProperty("user.dir") + "/" + "src/resources/objetosOBJ/" + carpeta + "/" + archivo + ".obj",
-                                escala),
+                                obj,
                                 grados[0], transformacion[0]),
                                 grados[1], transformacion[1]),
                                 grados[2], transformacion[2]),

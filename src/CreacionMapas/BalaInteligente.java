@@ -115,8 +115,8 @@ public class BalaInteligente {
             if (!encontradoResultadoZ) {
                 System.out.println("No encontrado");
                 // Proponemos nosotros unos valores aleatorios
-                casoAdecidir.setValue(0, fuerzaZ = r.nextInt(500) + 1);
-                casoAdecidir.setValue(1, anguloZ = r.nextInt(89));
+                casoAdecidir.setValue(0, fuerzaZ = r.nextInt(450) + 50);
+                casoAdecidir.setValue(1, anguloZ = r.nextInt(69)+20);
             }
 
             // Calculas fuerzas
