@@ -76,6 +76,7 @@ public class BigMind extends JFrame implements Runnable {
     HebraCreadora creadora;
     BranchGroup casaVisual;
     boolean eliminarCasa;
+    TransformGroup casaVisualTG;
 
     public BigMind() {
         CollisionConfiguration collisionConfiguration = new DefaultCollisionConfiguration();
@@ -179,6 +180,7 @@ public class BigMind extends JFrame implements Runnable {
         // hago una variable para la casa para borrarla cuando el asteroide choque con ella
         float escala = 2.5f;
         eliminarCasa = false;
+        casaVisualTG = new TransformGroup();
         casaVisual = new BranchGroup();
         casaVisual.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
         casaVisual.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
@@ -197,9 +199,11 @@ public class BigMind extends JFrame implements Runnable {
         float ancho = 0.75f;
         float alto = 0.70f;
         float largo = 1.0f;
-        rootBG.addChild(MiLibreria3D.trasladarEstatico(
+        casaVisualTG.addChild(
+                MiLibreria3D.trasladarEstatico(
                 casaVisual,
                 new Vector3f(2 + (ancho * escala), 0 + (alto * escala), 9 + (largo * escala))));
+        rootBG.addChild(casaVisualTG);
         
         return rootBG;
     }
@@ -239,7 +243,10 @@ public class BigMind extends JFrame implements Runnable {
             System.out.println("==================");
             System.out.println("CASA ELIMINADA");
             System.out.println("==================");
-            casaVisual.removeAllChildren();
+            
+            Transform3D t = new Transform3D();
+            t.set(new Vector3d(0d,-10d,0d));
+            casaVisualTG.setTransform(t);
         }
         bala.actualizar(posInicialBala, new Vector3f(personaje.posiciones));
 //        }catch(Exception e){
