@@ -226,7 +226,7 @@ public class BalaInteligente {
         //============================================================
         boolean encontradoResultadoZ = false;
         for (fuerzaZ = 1; fuerzaZ < 500 && !encontradoResultadoZ; fuerzaZ++) {// Poner en el jeugo mas de 50 de fuerzaZ no tiene sentido
-            for (anguloZ = 89; anguloZ > 0 && !encontradoResultadoZ; anguloZ--) {
+            for (anguloZ = 89; anguloZ > 20 && !encontradoResultadoZ; anguloZ--) {
                 casoAdecidir.setValue(0, fuerzaZ);
                 casoAdecidir.setValue(1, anguloZ);
                 try {
@@ -262,7 +262,7 @@ public class BalaInteligente {
         //============================================================
         boolean encontradoResultadoX = false;
         for (fuerzaX = 1; fuerzaX < 500 && !encontradoResultadoX; fuerzaX++) {// Poner en el jeugo mas de 50 de fuerzaZ no tiene sentido
-            for (anguloX = 89; anguloX > 0 && !encontradoResultadoX; anguloX--) {
+            for (anguloX = 89; anguloX > 20 && !encontradoResultadoX; anguloX--) {
                 casoAdecidir.setValue(0, fuerzaX);
                 casoAdecidir.setValue(1, anguloX);
                 try {

@@ -175,7 +175,7 @@ public class BigMind extends JFrame implements Runnable {
 
         // Creamos el cañon
         // Nota: la posicion de inicio de la bola ha de ser positiva en todos los ejes
-        posInicialBala = new Vector3f(0f, 1f, 12f);
+        posInicialBala = new Vector3f(-10f,1f,11f);//(0f, 1f, 12f);
         bala = new BalaInteligente(this, posInicialBala);
 //        bala.crearBala(1f, 1, elasticidad, new Vector3f(0f, 1f, 10f));//14f));
         float distanciaBuscada = (float) Math.sqrt(Math.pow(posInicialBala.x - posX, 2) + Math.pow(posInicialBala.z - posZ, 2));
@@ -222,7 +222,7 @@ public class BigMind extends JFrame implements Runnable {
 
                 personaje.rotarIzquierda();
                 fuerzaElevacion = personaje.masa * 2f * 2.5f;
-                fuerzaPedroX = personaje.masa * 2f * 2.5f;
+                fuerzaPedroX = personaje.masa * factorFuerza * 2.5f;
             }
             if (personaje.corriendo) {
                 fuerzaElevacion *= 2;
@@ -384,7 +384,7 @@ public class BigMind extends JFrame implements Runnable {
             // Creamos el escenario
             while (str.hasMoreTokens() && !elemento.contains("FIN")) {
                 ancho = alto = largo = 0;
-                System.out.println(elemento + "(" + posSiguienteX + ", " + posSiguienteY + ", " + posSiguienteZ + ")");
+                //System.out.println(elemento + "(" + posSiguienteX + ", " + posSiguienteY + ", " + posSiguienteZ + ")");
 
                 // Creo el espacio el cual es un comando que se puede realizar en cualquier sitio
                 if (elemento.contains("espacio")) {
@@ -516,7 +516,7 @@ public class BigMind extends JFrame implements Runnable {
                         ancho = ancho * escala;
                         alto = alto * escala;
                         largo = largo * escala;
-                        System.out.println("POSICION FIGURA:" + posicion.x);
+                        //System.out.println("POSICION FIGURA:" + posicion.x);
                         Figura construccion = new BoxMDL("objetosMDL/Iron_Golem.mdl", ancho, alto, largo, conjunto, listaObjetosFisicos, this, "src/resources/texturas/textura_hielo.jpg", false);
                         construccion.crearPropiedades(masaConstruccion, elasticidad, dumpingLineal, posicion.x, posicion.y, posicion.z, mundoFisico);
 
@@ -627,7 +627,9 @@ public class BigMind extends JFrame implements Runnable {
                         } else {
                             posicion = new Vector3f(posManual[0] + (ancho * escala), posManual[1] + (alto * escala), posManual[2] + (largo * escala));
                         }
-
+                        if(elemento.contains("click")){
+                            System.out.println("elemento: " + elemento + " clickable");
+                        }
                         // Lo introducimos dentro del arbol y lo trasladamos al lugar correcto
                         mundoBG.addChild(MiLibreria3D.trasladarEstatico(
                                 MiLibreria3D.rotarEstatico(
