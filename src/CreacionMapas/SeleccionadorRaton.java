@@ -26,12 +26,9 @@ public class SeleccionadorRaton extends PickMouseBehavior {
         if (pickResult != null) {
             Node nd = pickResult.getObject();
             String nombre = nd.getName();
-            System.out.println("PRUEBA SELECT:" + nd + " con nombre " + nombre);
-            /*
-            if (nd.getName() != null) {
-               
+            if (nombre != null) {
+                System.out.println("Objeto seleccionado:" + nombre);
             }
-            */
         }
     }
 }

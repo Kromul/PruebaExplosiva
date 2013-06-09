@@ -9,6 +9,7 @@ import com.bulletphysics.collision.dispatch.DefaultCollisionConfiguration;
 import com.bulletphysics.dynamics.DiscreteDynamicsWorld;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSolver;
+import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import figuras.BoxMDL;
 import figuras.EsferaMDL;
@@ -32,6 +33,7 @@ import javax.media.j3d.Canvas3D;
 import javax.media.j3d.Node;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
+import javax.media.j3d.TransparencyAttributes;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.vecmath.Point3d;
@@ -89,11 +91,11 @@ public class BigMind extends JFrame implements Runnable {
         zonaDibujo.setPreferredSize(new Dimension(780, 580));
         universo = new SimpleUniverse(zonaDibujo);
         BranchGroup escena = crearEscena();
-        
+
         //Añadimos el seleccionador de ratón
         SeleccionadorRaton select = new SeleccionadorRaton(zonaDibujo, escena);
         escena.addChild(select);
-        
+
         escena.compile();
         //This moves the ViewPlatform back a bit so objects can be viewed.
         universo.getViewingPlatform().setNominalViewingTransform();
@@ -117,13 +119,13 @@ public class BigMind extends JFrame implements Runnable {
         rootBG.addChild(conjunto);
         conjunto.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
         conjunto.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
-        
+
         //Añadimos mostrar
         ComportamientoMostrar mostrar = new ComportamientoMostrar(this);
         BoundingSphere limites = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
         mostrar.setSchedulingBounds(limites);
         rootBG.addChild(mostrar);
-        
+
         // Creamos el mundo 3D
         rootBG.addChild(crearMundo());
 
@@ -154,6 +156,18 @@ public class BigMind extends JFrame implements Runnable {
         rootBG.addChild(MiLibreria3D.trasladarEstatico(MiLibreria3D.CrearEjesCoordenada(), new Vector3f(10f, 0f, 0f)));
         rootBG.addChild(MiLibreria3D.trasladarEstatico(MiLibreria3D.CrearEjesCoordenada(), new Vector3f(0, 0f, 12f)));
 
+        //Caja detección casa
+        Appearance apariencia = new Appearance();
+        TransparencyAttributes ta = new TransparencyAttributes();
+        ta.setTransparencyMode(TransparencyAttributes.BLENDED);
+        ta.setTransparency(1f);
+        apariencia.setTransparencyAttributes(ta);
+        Box casa = new Box(2.2f, 2.5f, 2.8f, apariencia);
+        casa.setName("Casa");
+        TransformGroup tgCasa = new TransformGroup(MiLibreria3D.trasladarDinamico(new Vector3f(4f, 0, 11.3f)));
+        tgCasa.addChild(casa);
+        rootBG.addChild(tgCasa);
+
         return rootBG;
     }
 
@@ -176,7 +190,7 @@ public class BigMind extends JFrame implements Runnable {
 
         // Creamos el cañon
         // Nota: la posicion de inicio de la bola ha de ser positiva en todos los ejes
-        posInicialBala = new Vector3f(-10f,1f,11f);//(0f, 1f, 12f);
+        posInicialBala = new Vector3f(-10f, 1f, 11f);//(0f, 1f, 12f);
         bala = new BalaInteligente(this, posInicialBala);
 //        bala.crearBala(1f, 1, elasticidad, new Vector3f(0f, 1f, 10f));//14f));
         float distanciaBuscada = (float) Math.sqrt(Math.pow(posInicialBala.x - posX, 2) + Math.pow(posInicialBala.z - posZ, 2));
@@ -628,7 +642,7 @@ public class BigMind extends JFrame implements Runnable {
                         } else {
                             posicion = new Vector3f(posManual[0] + (ancho * escala), posManual[1] + (alto * escala), posManual[2] + (largo * escala));
                         }
-                        if(elemento.contains("click")){
+                        if (elemento.contains("click")) {
                             System.out.println("elemento: " + elemento + " clickable");
                         }
                         // Lo introducimos dentro del arbol y lo trasladamos al lugar correcto
@@ -668,7 +682,7 @@ public class BigMind extends JFrame implements Runnable {
             Logger.getLogger(BigMind.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return mundoBG;
     }
 
