@@ -19,7 +19,7 @@ java_caja_ancho0.2/alto0.2/largo5/esc1/textsuelo.jpg/posX-4/posZ-1/	final	|
 															
 java_caja_ancho8/alto0.2/largo0.2/esc1/textsuelo.jpg/posX-4/posZ8/	final	|													
 															
-obj_natur_druid_morning_star_esc4/posX14/posZ10/	obj_edif_granero_esc2.5/posX2/posZ9/														
+obj_natur_druid_morning_star_esc4/posX14/posZ10/															
 															
 obj_natur_tree_conifer_esc1/posX-14/posZ-10/	obj_natur_tree_conifer_esc1/posX-12/posZ-10/	obj_natur_tree_conifer_esc1/posX-10/posZ-10/	obj_natur_tree_conifer_esc1/posX-8/posZ-10/	obj_natur_tree_conifer_esc1/posX-6/posZ-10/	obj_natur_tree_conifer_esc1/posX-4/posZ-10/	obj_natur_tree_conifer_esc1/posX-2/posZ-10/	obj_natur_tree_conifer_esc1/posX0/posZ-10/	obj_natur_tree_conifer_esc1/posX2/posZ-10/	obj_natur_tree_conifer_esc1/posX4/posZ-10/	obj_natur_tree_conifer_esc1/posX6/posZ-10/	obj_natur_tree_conifer_esc1/posX8/posZ-10/	obj_natur_tree_conifer_esc1/posX10/posZ-10/			
 obj_natur_tree_conifer_esc1/posX-14/posZ-8/	obj_natur_tree_conifer_esc1/posX-12/posZ-8/	obj_natur_tree_conifer_esc1/posX-10/posZ-8/	obj_natur_tree_conifer_esc1/posX-8/posZ-8/	obj_natur_tree_conifer_esc1/posX-6/posZ-8/	obj_natur_tree_conifer_esc1/posX-4/posZ-8/	obj_natur_tree_conifer_esc1/posX-2/posZ-8/	obj_natur_tree_conifer_esc1/posX0/posZ-8/	obj_natur_tree_conifer_esc1/posX2/posZ-8/	obj_natur_tree_conifer_esc1/posX4/posZ-8/	obj_natur_tree_conifer_esc1/posX6/posZ-8/	obj_natur_tree_conifer_esc1/posX8/posZ-8/	obj_natur_tree_conifer_esc1/posX10/posZ-8/			
@@ -66,7 +66,7 @@ FIN
 java_caja_ancho20/alto0.2/largo0.2/esc1/textsuelo.jpg/	final	|													
 espacioZ2/															
 java_caja_ancho20/alto0.2/largo0.2/esc1/textsuelo.jpg/	final	|													
-															
+obj_edif_granero_esc2.5/posX2/posZ9/															
 FIN															
 java_caja_ancho0.2/alto0.2/largo0.2/esc1/textsuelo.jpg/	java_caja_ancho0.2/alto0.2/largo0.2/esc1/textsuelo.jpg/	java_caja_ancho0.2/alto0.2/largo0.2/esc1/textsuelo.jpg/	java_caja_ancho0.2/alto0.2/largo0.2/esc1/textsuelo.jpg/	suelo	java_caja_ancho0.2/alto0.2/largo0.2/esc1/textsuelo.jpg/	final	|								
 java_caja_ancho0.2/alto0.2/largo0.2/esc1/textsuelo.jpg/	java_caja_ancho0.2/alto0.2/largo0.2/esc1/textsuelo.jpg/	java_caja_ancho0.2/alto0.2/largo0.2/esc1/textsuelo.jpg/	java_caja_ancho0.2/alto0.2/largo0.2/esc1/textsuelo.jpg/	suelo	java_caja_ancho0.2/alto0.2/largo0.2/esc1/textsuelo.jpg/	final	|								

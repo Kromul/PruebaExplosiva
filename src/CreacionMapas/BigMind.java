@@ -74,6 +74,8 @@ public class BigMind extends JFrame implements Runnable {
     float posY;
     float posZ;
     HebraCreadora creadora;
+    BranchGroup casaVisual;
+    boolean eliminarCasa;
 
     public BigMind() {
         CollisionConfiguration collisionConfiguration = new DefaultCollisionConfiguration();
@@ -107,7 +109,7 @@ public class BigMind extends JFrame implements Runnable {
 
         MiLibreria3D.addMovimientoCamara(universo, zonaDibujo);
         MiLibreria3D.colocarCamara(universo, new Point3d(-15, 10, 18), new Point3d(0, 0, 0));
-
+        
         hebra.start();
     }
 
@@ -170,10 +172,35 @@ public class BigMind extends JFrame implements Runnable {
         tgCasa.addChild(casa);
         tgCasa.setName("Casa");
         rootBG.addChild(tgCasa);
-        
+
         // hebra para lanzar una piedra sobre la casa de la escena
         creadora = new HebraCreadora(70, 0.9f, conjunto, listaObjetosFisicos, false, this, mundoFisico);
 
+        // hago una variable para la casa para borrarla cuando el asteroide choque con ella
+        float escala = 2.5f;
+        eliminarCasa = false;
+        casaVisual = new BranchGroup();
+        casaVisual.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
+        casaVisual.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
+        casaVisual.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
+        casaVisual.setCapability(BranchGroup.ALLOW_DETACH);
+        try {
+            casaVisual = MiLibreria3D.crear(
+                                new Vector3f(0.0f, 0.0f, 0.0f),
+                                MiLibreria3D.tipoFigura.objetoOBJ, null, null, null,
+                                null,
+                                System.getProperty("user.dir") + "/" + "src/resources/objetosOBJ/" + "edificios" + "/" + "granero" + ".obj",
+                                escala);
+        } catch (Exception ex) {
+            Logger.getLogger(BigMind.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        float ancho = 0.75f;
+        float alto = 0.70f;
+        float largo = 1.0f;
+        rootBG.addChild(MiLibreria3D.trasladarEstatico(
+                casaVisual,
+                new Vector3f(2 + (ancho * escala), 0 + (alto * escala), 9 + (largo * escala))));
+        
         return rootBG;
     }
 
@@ -207,6 +234,13 @@ public class BigMind extends JFrame implements Runnable {
     void actualizar(float dt) {
         //ACTUALIZAR EL ESTADO DEL JUEGO
 //        try{
+        if(eliminarCasa){
+            eliminarCasa = false;
+            System.out.println("==================");
+            System.out.println("CASA ELIMINADA");
+            System.out.println("==================");
+            casaVisual.removeAllChildren();
+        }
         bala.actualizar(posInicialBala, new Vector3f(personaje.posiciones));
 //        }catch(Exception e){
 //            e.printStackTrace();
@@ -657,7 +691,6 @@ public class BigMind extends JFrame implements Runnable {
                                 null,
                                 System.getProperty("user.dir") + "/" + "src/resources/objetosOBJ/" + carpeta + "/" + archivo + ".obj",
                                 escala);
-                        obj.setName("obj");
                         mundoBG.addChild(MiLibreria3D.trasladarEstatico(
                                 MiLibreria3D.rotarEstatico(
                                 MiLibreria3D.rotarEstatico(
