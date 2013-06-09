@@ -2,10 +2,12 @@ package figuras;
 
 import CreacionMapas.Figura;
 import CreacionMapas.BigMind;
+import Libreria3D.MiLibreria3D;
 import utilidades.CapabilitiesMDL;
 import com.bulletphysics.collision.dispatch.*;
 import com.bulletphysics.collision.shapes.*;
 import com.sun.j3d.loaders.Scene;
+import com.sun.j3d.utils.geometry.Box;
 import java.net.URL;
 import java.util.ArrayList;
 import javax.media.j3d.*;
@@ -25,26 +27,44 @@ public class Personaje extends Figura {
     public float radio, alturaP, alturaDeOjos;
     boolean esPersonaje;
     SphereShape figuraFisica;
+    Box hitBox;
 
     public Personaje(float radio, BranchGroup conjunto, ArrayList<Figura> listaObjetos, BigMind juego, boolean esPersonaje) {
         super(conjunto, listaObjetos, juego);
         esMDL = true;
         this.esPersonaje = esPersonaje;
 
+        //Apariencia hitbox
+        Appearance apariencia = new Appearance();
+        TransparencyAttributes ta = new TransparencyAttributes();
+        ta.setTransparencyMode(TransparencyAttributes.BLENDED);
+        ta.setTransparency(1f);
+        apariencia.setTransparencyAttributes(ta);
+        hitBox = new Box(0.45f, 0.55f, 0.45f, apariencia);
+        hitBox.setName("Hit Box");
+        TransformGroup tgHitBox = new TransformGroup(MiLibreria3D.trasladarDinamico(new Vector3f(0, -0.2f, 0)));
+        tgHitBox.addChild(hitBox);
+
         //Creacion de la forma visual MDL
-        //nombre = "figura_MDL_" + identificador;
         TransformGroup figuraVisual = crearObjetoMDL(radio * 2);
-        figuraFisica = new SphereShape(radio*4);
+        figuraVisual.setCollidable(false);
+        figuraFisica = new SphereShape(radio * 4);
         ramaFisica = new CollisionObject();
         ramaFisica.setCollisionShape(figuraFisica);
         ramaVisible.addChild(desplazamientoFigura);
         desplazamientoFigura.addChild(figuraVisual);
+        desplazamientoFigura.addChild(tgHitBox);
 
         //Creacion del detector de teclas asociado
         if (esPersonaje) {
             DeteccionControlPersonaje mueve = new DeteccionControlPersonaje(this);
             mueve.setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
             ramaVisible.addChild(mueve);
+        }
+        //Creacion del detector de colisiones asociado
+        if (esPersonaje) {
+            DeteccionColisionPersonaje detector = new DeteccionColisionPersonaje(this);
+            ramaVisible.addChild(detector);
         }
     }
 

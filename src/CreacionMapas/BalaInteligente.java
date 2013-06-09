@@ -113,7 +113,7 @@ public class BalaInteligente {
 
             // Establezco el caso a decidir
             if (!encontradoResultadoZ) {
-                System.out.println("No encontrado");
+                //System.out.println("No encontrado");
                 // Proponemos nosotros unos valores aleatorios
                 casoAdecidir.setValue(0, fuerzaZ = r.nextInt(450) + 50);
                 casoAdecidir.setValue(1, anguloZ = r.nextInt(69)+20);
@@ -165,7 +165,7 @@ public class BalaInteligente {
             float distanciaRealCubierta = (float) Math.sqrt(Math.pow(posicion.x - posX, 2) + Math.pow(posicion.z - posZ, 2));
             //posZ < 0 ? posicion.z + Math.abs(posZ) : posicion.z - Math.abs(posZ);
 //            System.out.println("Fuerza: " + fuerzaZ + ", Angulo " + anguloZ + " Distancia real: " + distanciaRealCubierta);
-            System.out.println(fuerzaZ + "," + anguloZ + "," + distanciaRealCubierta);
+            //System.out.println(fuerzaZ + "," + anguloZ + "," + distanciaRealCubierta);
             // Cuando volvamos a actualizar se creara la bola de neuvo
             balaCreada = false;
             //=============================================================================
@@ -233,7 +233,7 @@ public class BalaInteligente {
                     resultadoEsperadoZ = conocimiento.classifyInstance(casoAdecidir);
                     if (resultadoEsperadoZ > distanciaObjetivoZ && resultadoEsperadoZ < distanciaObjetivoZ + 2) {
                         encontradoResultadoZ = true;
-                        System.out.println("Resultado esperado: " + resultadoEsperadoZ);
+                        //System.out.println("Resultado esperado: " + resultadoEsperadoZ);
 //                        System.out.println("¡encontrado! con un resultado esperado de " + resultadoEsperadoZ);
                     }
                 } catch (Exception ex) {

@@ -183,7 +183,7 @@ public class BigMind extends JFrame implements Runnable {
         float radio = 0.25f;
         posX = -11f;
         posY = 5f;
-        posZ = -13f;
+        posZ = -12f;
         float elasticidad = 0.5f;
         float dumpingLineal = 0.5f;
         personaje = new Personaje(radio, conjunto, listaObjetosFisicos, this, true);
@@ -254,7 +254,7 @@ public class BigMind extends JFrame implements Runnable {
                 personaje.cuerpoRigido.applyCentralForce(new Vector3f(fuerzaPedroX, 0, fuerzaPedroZ));
 //                personaje.cuerpoRigido.applyTorque(new Vector3f(0, fuerzaLateral, 0));
             } else {
-                System.out.println("parado");
+                //System.out.println("parado");
                 personaje.cuerpoRigido.clearForces();
             }
         }
