@@ -20,7 +20,7 @@ public class SeleccionadorRaton extends PickMouseBehavior {
         super(canvas, bg, new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
         setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
         pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
-        juego = juego;
+        this.juego = juego;
         conjunto = bg;
     }
 
@@ -33,8 +33,11 @@ public class SeleccionadorRaton extends PickMouseBehavior {
             String nombre = nd.getName();
             if (nombre != null) {
                 System.out.println("Objeto seleccionado:" + nombre);
-//                HebraCreadora creadora = new HebraCreadora(70, 0.9f, conjunto, juego.listaObjetosFisicos, false, this, juego.mundoFisico);
-                juego.creadora.start();
+//                HebraCreadora creadora = new HebraCreadora(70, 0.9f, juego.conjunto, juego.listaObjetosFisicos, false, this, juego.mundoFisico);
+                if(juego.creadora.isAlive()){
+                    juego.creadora.destroy();
+                }
+                juego.creadora.run();
             }
         }
     }
