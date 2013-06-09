@@ -83,11 +83,16 @@ public class BigMind extends JFrame implements Runnable {
 
         Container GranPanel = getContentPane();
         JPanel Controles = new JPanel(new GridLayout(1, 4));
-        Canvas3D dibujo3D = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
-        GranPanel.add(dibujo3D, BorderLayout.CENTER);
-        dibujo3D.setPreferredSize(new Dimension(780, 580));
-        universo = new SimpleUniverse(dibujo3D);
+        Canvas3D zonaDibujo = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
+        GranPanel.add(zonaDibujo, BorderLayout.CENTER);
+        zonaDibujo.setPreferredSize(new Dimension(780, 580));
+        universo = new SimpleUniverse(zonaDibujo);
         BranchGroup escena = crearEscena();
+        
+        //Añadimos el seleccionador de ratón
+        SeleccionadorRaton select = new SeleccionadorRaton(zonaDibujo, escena);
+        escena.addChild(select);
+        
         escena.compile();
         //This moves the ViewPlatform back a bit so objects can be viewed.
         universo.getViewingPlatform().setNominalViewingTransform();
@@ -96,7 +101,7 @@ public class BigMind extends JFrame implements Runnable {
         pack();
         setVisible(true);
 
-        MiLibreria3D.addMovimientoCamara(universo, dibujo3D);
+        MiLibreria3D.addMovimientoCamara(universo, zonaDibujo);
         MiLibreria3D.colocarCamara(universo, new Point3d(-15, 10, 18), new Point3d(0, 0, 0));
 
         hebra.start();
@@ -106,15 +111,18 @@ public class BigMind extends JFrame implements Runnable {
         BranchGroup rootBG = new BranchGroup();
         BranchGroup escenaBG = new BranchGroup();
 
+        //Añadimos conjunto
         conjunto = new BranchGroup();
         rootBG.addChild(conjunto);
         conjunto.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
         conjunto.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
+        
+        //Añadimos mostrar
         ComportamientoMostrar mostrar = new ComportamientoMostrar(this);
         BoundingSphere limites = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
         mostrar.setSchedulingBounds(limites);
         rootBG.addChild(mostrar);
-
+        
         // Creamos el mundo 3D
         rootBG.addChild(crearMundo());
 
@@ -655,7 +663,7 @@ public class BigMind extends JFrame implements Runnable {
             Logger.getLogger(BigMind.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         return mundoBG;
     }
 
