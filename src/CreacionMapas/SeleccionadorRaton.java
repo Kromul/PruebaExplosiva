@@ -14,7 +14,7 @@ public class SeleccionadorRaton extends PickMouseBehavior {
 
     BranchGroup conjunto;
     BigMind juego;
-    
+
     //Atributos
     public SeleccionadorRaton(Canvas3D canvas, BranchGroup bg, BigMind juego) {
         super(canvas, bg, new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
@@ -32,12 +32,11 @@ public class SeleccionadorRaton extends PickMouseBehavior {
             Node nd = pickResult.getObject();
             String nombre = nd.getName();
             if (nombre != null) {
-                System.out.println("Objeto seleccionado:" + nombre);
+                if (nombre.equalsIgnoreCase("Casa")) {
+                    System.out.println("Objeto seleccionado:" + nombre);
 //                HebraCreadora creadora = new HebraCreadora(70, 0.9f, juego.conjunto, juego.listaObjetosFisicos, false, this, juego.mundoFisico);
-                if(juego.creadora.isAlive()){
-                    juego.creadora.destroy();
+                    juego.creadora.run();
                 }
-                juego.creadora.run();
             }
         }
     }
