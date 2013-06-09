@@ -34,7 +34,7 @@ public class Personaje extends Figura {
         //Creacion de la forma visual MDL
         //nombre = "figura_MDL_" + identificador;
         TransformGroup figuraVisual = crearObjetoMDL(radio * 2);
-        figuraFisica = new SphereShape(radio);
+        figuraFisica = new SphereShape(radio*4);
         ramaFisica = new CollisionObject();
         ramaFisica.setCollisionShape(figuraFisica);
         ramaVisible.addChild(desplazamientoFigura);

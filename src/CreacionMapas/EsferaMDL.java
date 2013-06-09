@@ -45,7 +45,6 @@ public class EsferaMDL extends FiguraInteligente {
         ramaFisica.setCollisionShape(figuraFisica);
         ramaVisible.addChild(desplazamientoFigura);
         desplazamientoFigura.addChild(figuraVisual);
-
     }
 
     TransformGroup crearObjetoMDL(String archivo, float multiplicadorEscala) {
