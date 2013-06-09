@@ -16,7 +16,6 @@ import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSo
 import com.sun.j3d.utils.geometry.ColorCube;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import figuras.BoxMDL;
-import figuras.EsferaMDL;
 import figuras.Personaje;
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -71,6 +70,7 @@ public class ProjectExplosion extends JFrame implements Runnable {
     boolean victoria = false;
     boolean derrota = false;
     boolean vistaPajaro = false;
+    Vector3f posInicialBala;
     // Escena
     String matrixScene[][];
     // Inteligencia Artificial
@@ -174,9 +174,6 @@ public class ProjectExplosion extends JFrame implements Runnable {
         tgCasa.setName("Casa");
         rootBG.addChild(tgCasa);
 
-        //Hebra para lanzar una piedra sobre la casa de la escena
-        creadora = new HebraCreadora(70, 0.9f, conjunto, listaObjetosFisicos, false, this, mundoFisico);
-
         //Hago una variable para la casa para borrarla cuando el asteroide choque con ella
         float escala = 2.5f;
         eliminarCasa = false;
@@ -253,22 +250,25 @@ public class ProjectExplosion extends JFrame implements Runnable {
         posInicialBala = new Vector3f(-10f, 1f, 11f);//(0f, 1f, 12f);
         bala = new BalaInteligente(this, posInicialBala);
 //        bala.crearBala(1f, 1, elasticidad, new Vector3f(0f, 1f, 10f));//14f));
-        float distanciaBuscada = (float) Math.sqrt(Math.pow(posInicialBala.x - posX, 2) + Math.pow(posInicialBala.z - posZ, 2));
-        System.out.println("Distancia buscada: " + distanciaBuscada);
+        
+        creadora = new HebraCreadora(70, 0.9f, conjunto, listaObjetosFisicos, false, this, mundoFisico);
     }
-    Vector3f posInicialBala;
 
     void actualizar(float dt) {
         //ACTUALIZAR EL ESTADO DEL JUEGO
         if (eliminarCasa) {
-            System.out.println("==================");
-            System.out.println("CASA ELIMINADA");
-            System.out.println("==================");
             casaEliminada = true;
             eliminarCasa = false;
             Transform3D t = new Transform3D();
             t.set(new Vector3d(0d, -10d, 0d));
             casaVisualTG.setTransform(t);
+            /*
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ProjectExplosion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            */
             victoria = true;
         }
         if (personaje.impactoEsfera) {
@@ -354,13 +354,6 @@ public class ProjectExplosion extends JFrame implements Runnable {
         } catch (Exception e) {
         }
         this.mostrandoFisicas = false;
-
-        //MOSTRAR CÁMARA
-        if (victoria) {
-            juegoSuperado();
-        } else if (derrota) {
-            juegoFracasado();
-        }
     }
 
     @Override
@@ -368,7 +361,7 @@ public class ProjectExplosion extends JFrame implements Runnable {
         cargarContenido();
         float dt = 3f / 100f;
         int tiempoDeEspera = (int) (dt * 1000);
-        while (true) {
+        while ((!victoria && !derrota) || (creadora.getFigura().posiciones[1] > creadora.getRadio()+0.1)) {
             try {
                 actualizar(dt);
             } catch (Exception e) {
@@ -378,6 +371,11 @@ public class ProjectExplosion extends JFrame implements Runnable {
                 Thread.sleep(tiempoDeEspera);
             } catch (Exception e) {
             }
+        }
+        if (victoria) {
+            juegoSuperado();
+        } else if (derrota) {
+            juegoFracasado();
         }
     }
 
@@ -736,46 +734,5 @@ public class ProjectExplosion extends JFrame implements Runnable {
         }
 
         return mundoBG;
-    }
-
-    class HebraCreadora extends Thread {
-
-        final BranchGroup conjunto;
-        final ArrayList<CreacionMapas.Figura> listaObjetosFisicos;
-        DiscreteDynamicsWorld mundoFisico = null;
-        final ProjectExplosion juego;
-        int maxEsferas;
-        boolean mdl;
-        float radio;
-
-        public HebraCreadora(int maxEsferas, float radio, BranchGroup conjunto, ArrayList<CreacionMapas.Figura> listaObjetosFisicos, boolean mdl, ProjectExplosion j, DiscreteDynamicsWorld mundoFisico) {
-            this.conjunto = conjunto;
-            this.listaObjetosFisicos = listaObjetosFisicos;
-            this.mundoFisico = mundoFisico;
-            this.juego = j;
-            this.maxEsferas = maxEsferas;
-            this.mdl = mdl;
-            this.radio = radio;
-        }
-
-        @Override
-        public void run() {
-            int numEsferas = 0;
-            try {
-                Thread.sleep(10);
-            } catch (Exception e) {
-            }
-//            while (numEsferas <= maxEsferas) {
-            float elasticidad = 0.5f;
-            float dumpingLineal = 0.5f;
-            float masa = 5;
-//                for (float x = 3; x >= -3; x = x - 2f) {
-//                    numEsferas++;
-            Figura fig;
-            fig = new EsferaMDL("src/resources/objetosOBJ/ataques/war_axe.obj", radio, conjunto, listaObjetosFisicos, juego);
-            if (!juego.actualizandoFisicas) {
-                fig.crearPropiedades(masa, elasticidad, dumpingLineal, 4, 5, 11, mundoFisico);
-            }
-        }
     }
 }

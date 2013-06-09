@@ -33,7 +33,8 @@ public class SeleccionadorRaton extends PickMouseBehavior {
             String nombre = nd.getName();
             if (nombre != null && !lanzado) {
                 if (nombre.equalsIgnoreCase("Casa")) {
-                    juego.creadora.run();
+                    juego.creadora = new HebraCreadora(70, 0.9f, juego.conjunto, juego.listaObjetosFisicos, false, juego, juego.mundoFisico);
+                    juego.creadora.start();
                     lanzado = true;
                     this.juego.eliminarCasa = true;
                 }
