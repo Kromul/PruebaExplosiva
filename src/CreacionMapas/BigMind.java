@@ -181,6 +181,8 @@ public class BigMind extends JFrame implements Runnable {
         float escala = 2.5f;
         eliminarCasa = false;
         casaVisualTG = new TransformGroup();
+        casaVisualTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        casaVisualTG.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
         casaVisual = new BranchGroup();
         casaVisual.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
         casaVisual.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
