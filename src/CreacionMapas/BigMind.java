@@ -108,7 +108,7 @@ public class BigMind extends JFrame implements Runnable {
         MiLibreria3D.addMovimientoCamara(universo, zonaDibujo);
         MiLibreria3D.colocarCamara(universo, new Point3d(-15, 10, 18), new Point3d(0, 0, 0));
 
-//        hebra.start();
+        hebra.start();
         creadora = new HebraCreadora(70, 0.9f, conjunto, listaObjetosFisicos, false, this, mundoFisico);
     }
 

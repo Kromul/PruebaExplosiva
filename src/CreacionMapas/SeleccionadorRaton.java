@@ -20,7 +20,7 @@ public class SeleccionadorRaton extends PickMouseBehavior {
         super(canvas, bg, new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
         setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
         pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
-        juego = juego;
+        this.juego = juego;
         conjunto = bg;
     }
 

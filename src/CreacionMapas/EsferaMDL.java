@@ -7,6 +7,7 @@ import utilidades.CapabilitiesMDL;
 import com.bulletphysics.collision.dispatch.*;
 import com.bulletphysics.collision.shapes.*;
 import com.sun.j3d.loaders.Scene;
+import com.sun.j3d.utils.geometry.ColorCube;
 import com.sun.j3d.utils.geometry.Sphere;
 import figuras.DeteccionControlPersonaje;
 import java.net.URL;
@@ -30,14 +31,25 @@ public class EsferaMDL extends FiguraInteligente {
     public EsferaMDL(String ficheroMDL, float radio, BranchGroup conjunto, ArrayList<FiguraInteligente> listaObjetos, BigMind juego, boolean esPersonaje, Vector3f posicionInicial) {
         super(conjunto, listaObjetos, juego);
         this.esPersonaje = esPersonaje;
-        //Creando una apariencia
+
+        //Creando la apariencia de la esfera
         Appearance apariencia = new Appearance();
         this.radio = radio;
         TextureAttributes texAttr = new TextureAttributes();
         texAttr.setTextureMode(TextureAttributes.MODULATE);
         apariencia.setTextureAttributes(texAttr);
-        
+
+        //Creando la apariencia de la caja de detección
+        Appearance aparienciaCaja = new Appearance();
+        TransparencyAttributes ta = new TransparencyAttributes();
+        ta.setTransparencyMode(TransparencyAttributes.BLENDED);
+        ta.setTransparency(1f);
+        aparienciaCaja.setTransparencyAttributes(ta);
+
         //Creacion de la forma visual MDL
+        ColorCube hitBox = new ColorCube(radio);
+        hitBox.setAppearance(aparienciaCaja);
+        hitBox.setName("Esfera");
         Node figuraVisual = new Sphere(radio, Sphere.GENERATE_TEXTURE_COORDS, 60, apariencia);
 //        System.out.println("============CREADO EL MICROBIO==================");
         SphereShape figuraFisica = new SphereShape(radio);
@@ -45,6 +57,7 @@ public class EsferaMDL extends FiguraInteligente {
         ramaFisica.setCollisionShape(figuraFisica);
         ramaVisible.addChild(desplazamientoFigura);
         desplazamientoFigura.addChild(figuraVisual);
+        desplazamientoFigura.addChild(hitBox);
     }
 
     TransformGroup crearObjetoMDL(String archivo, float multiplicadorEscala) {
