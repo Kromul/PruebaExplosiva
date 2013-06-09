@@ -66,6 +66,10 @@ public class BigMind extends JFrame implements Runnable {
     String matrixScene[][];
     // Inteligencia Artificial
     BalaInteligente bala;
+    // Posicion inicial del personaje
+    float posX;
+    float posY;
+    float posZ;
 
     public BigMind() {
         CollisionConfiguration collisionConfiguration = new DefaultCollisionConfiguration();
@@ -139,6 +143,7 @@ public class BigMind extends JFrame implements Runnable {
         rootBG.addChild(MiLibreria3D.CrearEjesCoordenada());
         rootBG.addChild(MiLibreria3D.getDefaultIlumination());
         rootBG.addChild(MiLibreria3D.trasladarEstatico(MiLibreria3D.CrearEjesCoordenada(), new Vector3f(10f, 0f, 0f)));
+        rootBG.addChild(MiLibreria3D.trasladarEstatico(MiLibreria3D.CrearEjesCoordenada(), new Vector3f(0, 0f, 12f)));
 
         return rootBG;
     }
@@ -147,8 +152,9 @@ public class BigMind extends JFrame implements Runnable {
         //Creando el personaje del juego, controlado por teclado. Tambien se pudo haber creado en CrearEscena()
         float masa = 1f;
         float radio = 0.25f;
-        float posX = 5f;
-        float posY = 5f, posZ = 0f;
+        posX = -11f;
+        posY = 5f;
+        posZ = -13f;
         float elasticidad = 0.5f;
         float dumpingLineal = 0.5f;
         personaje = new Personaje(radio, conjunto, listaObjetosFisicos, this, true);
@@ -160,13 +166,19 @@ public class BigMind extends JFrame implements Runnable {
         creadora.start();
 
         // Creamos el cañon
-        bala = new BalaInteligente(this, new Vector3f(0f, 1f, 10f));
+        // Nota: la posicion de inicio de la bola ha de ser positiva en todos los ejes
+        posInicialBala = new Vector3f(0f, 1f, 12f);
+        bala = new BalaInteligente(this, posInicialBala);
+//        bala.crearBala(1f, 1, elasticidad, new Vector3f(0f, 1f, 10f));//14f));
+        float distanciaBuscada = (float) Math.sqrt(Math.pow(posInicialBala.x - posX, 2) + Math.pow(posInicialBala.z - posZ, 2));
+        System.out.println("Distancia buscada: " + distanciaBuscada);
     }
+    Vector3f posInicialBala;
 
     void actualizar(float dt) {
         //ACTUALIZAR EL ESTADO DEL JUEGO
 //        try{
-        bala.actualizar(10, 10);
+        bala.actualizar(posInicialBala, new Vector3f(personaje.posiciones));
 //        }catch(Exception e){
 //            e.printStackTrace();
 //        }
@@ -174,9 +186,12 @@ public class BigMind extends JFrame implements Runnable {
         //ACTUALIZAR DATOS DE FUERZAS DEL PERSONAJE CONTROLADO POR EL JUGADOR
         if (personaje != null) {
             float fuerzaElevacion = 0, fuerzaLateral = 0;
+            float fuerzaPedroZ = 0, fuerzaPedroX = 0;
+            float factorFuerza = 4;
             if (personaje.adelante) {
                 //personaje.rotarAdelante();
                 fuerzaElevacion = personaje.masa * 2f * 2.5f;
+                fuerzaPedroZ = personaje.masa * factorFuerza * 2.5f;
             }
             if (personaje.atras) {
                 fuerzaElevacion = -personaje.masa * 2f * 2.5f;
@@ -184,6 +199,7 @@ public class BigMind extends JFrame implements Runnable {
                  personaje.rotarAtras();
                  fuerzaElevacion = personaje.masa * 2f * 2.5f;
                  */
+                fuerzaPedroZ = -personaje.masa * factorFuerza * 2.5f;
             }
             if (personaje.derecha) {
                 fuerzaLateral = -personaje.masa * 4f;
@@ -191,22 +207,25 @@ public class BigMind extends JFrame implements Runnable {
                  personaje.rotarDerecha();
                  fuerzaElevacion = personaje.masa * 2f * 2.5f;
                  */
+                fuerzaPedroX = -personaje.masa * factorFuerza * 2.5f;
             }
             if (personaje.izquierda) {
                 //fuerzaLateral = personaje.masa * 4f;
 
                 personaje.rotarIzquierda();
                 fuerzaElevacion = personaje.masa * 2f * 2.5f;
-
+                fuerzaPedroX = personaje.masa * 2f * 2.5f;
             }
             if (personaje.corriendo) {
                 fuerzaElevacion *= 2;
             }
             if (!personaje.parar) {
                 Vector3d direccionFrente = personaje.conseguirDireccionFrontal();
-                personaje.cuerpoRigido.applyCentralForce(new Vector3f((float) direccionFrente.x * fuerzaElevacion * 0.1f, 0, (float) direccionFrente.z * fuerzaElevacion * 0.1f));
-                personaje.cuerpoRigido.applyTorque(new Vector3f(0, fuerzaLateral, 0));
+//Alex-->                personaje.cuerpoRigido.applyCentralForce(new Vector3f((float) direccionFrente.x * fuerzaElevacion * 0.1f, 0, (float) direccionFrente.z * fuerzaElevacion * 0.1f));
+                personaje.cuerpoRigido.applyCentralForce(new Vector3f(fuerzaPedroX, 0, fuerzaPedroZ));
+//                personaje.cuerpoRigido.applyTorque(new Vector3f(0, fuerzaLateral, 0));
             } else {
+                System.out.println("parado");
                 personaje.cuerpoRigido.clearForces();
             }
         }
@@ -550,6 +569,11 @@ public class BigMind extends JFrame implements Runnable {
                             archivo = "bar_concreto";
                         } else if (elemento.contains("brick_shader")) {
                             archivo = "brick_shader";
+                        }
+                    } else if (elemento.contains("otros")) {
+                        carpeta = "otros";
+                        if (elemento.contains("dragon")) {
+                            archivo = "dragon";
                         }
                     }
 

@@ -4,7 +4,6 @@
  */
 package CreacionMapas;
 
-import InteligenciaArtificial.*;
 import CreacionMapas.BigMind;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,8 +16,6 @@ import weka.classifiers.Evaluation;
 import weka.classifiers.trees.M5P;
 import weka.core.Instance;
 import weka.core.Instances;
-
-
 
 /**
  *
@@ -52,7 +49,6 @@ public class BalaInteligente {
     float fuerzaX;
     float anguloX;
     double resultadoEsperadoX;
-    
     float fuerzaHorizontalZ = 0, fuerzaVerticalZ = 0;
     float fuerzaHorizontalX = 0, fuerzaVerticalX = 0;
     float fuerzaVerticalY = 0;
@@ -71,14 +67,21 @@ public class BalaInteligente {
         resultadoEsperadoX = 0;
     }
 
-    public void actualizar(float distanciaObjetivoX, float distanciaObjetivoZ) {
-        System.out.println("Que comience el juego");
+    /**
+     * Actualizamos las fuerzas pasandole la posicion desde la que disparamos y
+     * la posicion a la que queremos disparar
+     *
+     * @param posicionDisparo
+     * @param posicionObjetivo
+     */
+    public void actualizar(Vector3f posDisparo, Vector3f posObjetivo) {
+//        System.out.println("Que comience el juego");
         /**
          * ************************
          * INTELIGENCIA ARTIFICIAL ************************
          */
         if (!balaCreada) {
-            System.out.println("SE CREA LA BOLA");
+//            System.out.println("SE CREA LA BOLA");
             balaCreada = true;
             if (balaInteligente != null) {
                 balaInteligente.remover();
@@ -88,6 +91,11 @@ public class BalaInteligente {
 
 //            System.out.println("=========Vuelta a empezar=========");
         Random r = new Random();
+//        System.out.println(posDisparo.z);
+//        System.out.println(posObjetivo.z);
+        float distanciaObjetivoZ = posObjetivo.z < posDisparo.z ? Math.abs(Math.abs(posObjetivo.z) + Math.abs(posDisparo.z)) : Math.abs(Math.abs(posDisparo.z) - Math.abs(posObjetivo.z));
+        float distanciaObjetivoX = posObjetivo.x < posDisparo.x ? Math.abs(Math.abs(posObjetivo.x) + Math.abs(posDisparo.x)) : Math.abs(Math.abs(posDisparo.x) - Math.abs(posObjetivo.x));
+//        System.out.println(distanciaObjetivoX);
 //        float distanciaObjetivoZ = 20;//r.nextInt(20) + 1;
 //        float distanciaObjetivoX = 20;
 
@@ -97,41 +105,47 @@ public class BalaInteligente {
         //ACTUALIZAR DATOS DE FUERZAS DEL PERSONAJE CONTROLADO POR EL JUGADOR
         //--------------------------------------------------------------------
         if (balaCreada && !lanzado) {
-            System.out.println("Se lanza la bola");
+//            System.out.println("Se lanza la bola");
             // Consigo las fuerzas y angulos en X y Z para las dos distancias que tengo
+//            System.out.println("Distancia objetivo Z:" + distanciaObjetivoZ);
             boolean encontradoResultadoZ = buscarFuerzaAnguloZ(casoAdecidir, distanciaObjetivoZ, r);
             boolean encontradoResultadoX = buscarFuerzaAnguloX(casoAdecidir, distanciaObjetivoX, r);
-            
+
+            // Establezco el caso a decidir
+            if (!encontradoResultadoZ) {
+                System.out.println("No encontrado");
+                // Proponemos nosotros unos valores aleatorios
+                casoAdecidir.setValue(0, fuerzaZ = r.nextInt(500) + 1);
+                casoAdecidir.setValue(1, anguloZ = r.nextInt(89));
+            }
+
             // Calculas fuerzas
             fuerzaVerticalZ = (float) (fuerzaZ * Math.sin(Math.toRadians(anguloZ))) * balaInteligente.masa * 10f;
             fuerzaVerticalZ = (float) (fuerzaX * Math.sin(Math.toRadians(anguloX))) * balaInteligente.masa * 10f;
             fuerzaHorizontalZ = (float) (fuerzaZ * Math.cos(Math.toRadians(anguloZ))) * balaInteligente.masa * 10f;
             fuerzaHorizontalX = (float) (fuerzaX * Math.cos(Math.toRadians(anguloX))) * balaInteligente.masa * 10f;
-            
+
             // Consigo la fuerza final en Y que le dare la cual sera la mayor
             // de las que necesite para llegar a la distancia X o Z sugeridas
             fuerzaVerticalY = fuerzaVerticalZ > fuerzaVerticalX ? fuerzaVerticalZ : fuerzaVerticalX;
-            
-            // Establezco el caso a decidir
-            if (!encontradoResultadoZ) {
-                // Proponemos nosotros unos valores aleatorios
-                casoAdecidir.setValue(0, fuerzaZ = r.nextInt(500) + 1);
-                casoAdecidir.setValue(1, anguloZ = r.nextInt(89));
-            }
-            
-            if (!encontradoResultadoX) {
-                // Proponemos nosotros unos valores aleatorios
-                casoAdecidir.setValue(0, fuerzaX = r.nextInt(500) + 1);
-                casoAdecidir.setValue(1, anguloX = r.nextInt(89));
-            }
+            // Indicamos la fuerza real que aplicamos para despues entrenar con valores
+            // reales a la inteligencia
+            fuerzaVerticalZ = fuerzaVerticalY;
+
+            // Comprobamos si tenemos que aplicar la fuerza en X hacia derecha o hacia izquierda
+            fuerzaHorizontalX = posicion.x > posObjetivo.x ? -fuerzaHorizontalX : fuerzaHorizontalX;
 
             // Aplico las fuerzas
-            balaInteligente.cuerpoRigido.applyCentralForce(new Vector3f(+fuerzaHorizontalX, fuerzaVerticalY, -fuerzaHorizontalZ));
+            balaInteligente.cuerpoRigido.applyCentralForce(new Vector3f(fuerzaHorizontalX, fuerzaVerticalY, -fuerzaHorizontalZ));
             lanzado = true;
+            // Indicamos la fuerza real que aplicamos para despues entrenar con valores
+            // reales a la inteligencia
+            fuerzaZ = fuerzaVerticalZ > fuerzaVerticalX ? fuerzaZ : fuerzaX;
+            anguloZ = fuerzaVerticalZ > fuerzaVerticalX ? anguloZ : anguloX;
         }
 
         if (lanzado && balaInteligente.posiciones[1] < radio) {
-            System.out.println("Se buscan las nuevas fuerzas");
+//            System.out.println("Se buscan las nuevas fuerzas");
             lanzado = false;
             float posX;
             float posY, posZ, masa;
@@ -142,8 +156,16 @@ public class BalaInteligente {
             posX = balaInteligente.posiciones[0];
             posY = balaInteligente.posiciones[1];
             posZ = balaInteligente.posiciones[2];
-            float distanciaRealCubierta = posZ < 0 ? posicion.z + Math.abs(posZ) : posicion.z - Math.abs(posZ);
-            System.out.println("Distancia cubierta: " + distanciaRealCubierta);
+
+            // Conseguimos la distancia entre los dos puntos
+            // Realmente la distancia que decimos si ha cubierto respecto a lo esperado
+            // es la distancia en Z ya que no podemos indicar a weka que dada
+            // una fuerza en un eje y en otro de un resultado, al menos yo no he sabido.
+
+            float distanciaRealCubierta = (float) Math.sqrt(Math.pow(posicion.x - posX, 2) + Math.pow(posicion.z - posZ, 2));
+            //posZ < 0 ? posicion.z + Math.abs(posZ) : posicion.z - Math.abs(posZ);
+//            System.out.println("Fuerza: " + fuerzaZ + ", Angulo " + anguloZ + " Distancia real: " + distanciaRealCubierta);
+            System.out.println(fuerzaZ + "," + anguloZ + "," + distanciaRealCubierta);
             // Cuando volvamos a actualizar se creara la bola de neuvo
             balaCreada = false;
             //=============================================================================
@@ -166,7 +188,7 @@ public class BalaInteligente {
                 Evaluation evaluador = new Evaluation(casosEntrenamiento);
                 evaluador.crossValidateModel(conocimiento, casosEntrenamiento, 10, new Random(1));
 
-                System.out.println("Distancia objetivo:" + distanciaObjetivoZ + ", Resultado real: " + distanciaRealCubierta + ", Resultado esperado: " + resultadoEsperadoZ + ",( " + fuerzaZ + ", " + anguloZ + ")");
+//                System.out.println("Distancia objetivo:" + distanciaObjetivoZ + ", Resultado real: " + distanciaRealCubierta + ", Resultado esperado: " + resultadoEsperadoZ + ",( " + fuerzaZ + ", " + anguloZ + ")");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -187,9 +209,9 @@ public class BalaInteligente {
     }
 
     public synchronized EsferaMDL crearBala(float radio, float masa, float elasticidad, Vector3f posicion) {
-        EsferaMDL balaInteligente = new EsferaMDL("objetosMDL/Iron_Golem.mdl", radio, juego.conjunto, juego.listaObjetosFisicosInteligentes, juego, true);
-        balaInteligente.crearPropiedades(masa, elasticidad, 0.5f, posicion.x, posicion.y, posicion.z, juego.mundoFisico);//0f, 1f, 1f, mundoFisico);
-
+        EsferaMDL balaInteligente = new EsferaMDL("objetosMDL/Iron_Golem.mdl", radio, juego.conjunto, juego.listaObjetosFisicosInteligentes, juego, true, posicion);
+        balaInteligente.crearPropiedades(masa, elasticidad, 0.9f, posicion.x, posicion.y, posicion.z, juego.mundoFisico);//0f, 1f, 1f, mundoFisico);
+//        System.out.println(balaInteligente.posiciones[0] + ", " + balaInteligente.posiciones[1] + ", " + balaInteligente.posiciones[2]);
         return balaInteligente;
     }
 
@@ -209,9 +231,10 @@ public class BalaInteligente {
                 casoAdecidir.setValue(1, anguloZ);
                 try {
                     resultadoEsperadoZ = conocimiento.classifyInstance(casoAdecidir);
-                    if (resultadoEsperadoZ > distanciaObjetivoZ && resultadoEsperadoZ < distanciaObjetivoZ + 1.1) {
+                    if (resultadoEsperadoZ > distanciaObjetivoZ && resultadoEsperadoZ < distanciaObjetivoZ + 2) {
                         encontradoResultadoZ = true;
-                        System.out.println("¡encontrado! con un resultado esperado de " + resultadoEsperadoZ);
+                        System.out.println("Resultado esperado: " + resultadoEsperadoZ);
+//                        System.out.println("¡encontrado! con un resultado esperado de " + resultadoEsperadoZ);
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(BalaInteligente.class.getName()).log(Level.SEVERE, null, ex);
@@ -227,7 +250,7 @@ public class BalaInteligente {
         fuerzaHorizontalZ = (float) (fuerzaZ * Math.cos(Math.toRadians(anguloZ))) * balaInteligente.masa * 10f;
         return encontradoResultadoZ;
     }
-    
+
     private boolean buscarFuerzaAnguloX(Instance casoAdecidir, float distanciaObjetivoX, Random r) {
         //=============================================================================
         // Aqui habria que capturar los valores fuerzaZ-anguloZ para los cuales
@@ -244,9 +267,9 @@ public class BalaInteligente {
                 casoAdecidir.setValue(1, anguloX);
                 try {
                     resultadoEsperadoX = conocimiento.classifyInstance(casoAdecidir);
-                    if (resultadoEsperadoX > distanciaObjetivoX && resultadoEsperadoX < distanciaObjetivoX + 1.1) {
+                    if (resultadoEsperadoX > distanciaObjetivoX && resultadoEsperadoX < distanciaObjetivoX + 2) {
                         encontradoResultadoX = true;
-                        System.out.println("¡encontrado! con un resultado esperado de " + resultadoEsperadoZ);
+//                        System.out.println("¡encontrado! con un resultado esperado de " + resultadoEsperadoZ);
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(BalaInteligente.class.getName()).log(Level.SEVERE, null, ex);

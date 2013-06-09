@@ -19,24 +19,7 @@ java_caja_ancho0.2/alto0.2/largo5/esc1/textsuelo.jpg/posX-4/posZ-1/	final	|
 															
 java_caja_ancho8/alto0.2/largo0.2/esc1/textsuelo.jpg/posX-4/posZ8/	final	|													
 															
-															
-															
-															
-															
-															
-															
-															
-															
-															
-															
-															
-															
-															
-															
-															
-															
-															
-															
+obj_natur_druid_morning_star_esc4/posX14/posZ10/	obj_edif_granero_esc2.5/posX2/posZ9/														
 															
 obj_natur_tree_conifer_esc1/posX-14/posZ-10/	obj_natur_tree_conifer_esc1/posX-12/posZ-10/	obj_natur_tree_conifer_esc1/posX-10/posZ-10/	obj_natur_tree_conifer_esc1/posX-8/posZ-10/	obj_natur_tree_conifer_esc1/posX-6/posZ-10/	obj_natur_tree_conifer_esc1/posX-4/posZ-10/	obj_natur_tree_conifer_esc1/posX-2/posZ-10/	obj_natur_tree_conifer_esc1/posX0/posZ-10/	obj_natur_tree_conifer_esc1/posX2/posZ-10/	obj_natur_tree_conifer_esc1/posX4/posZ-10/	obj_natur_tree_conifer_esc1/posX6/posZ-10/	obj_natur_tree_conifer_esc1/posX8/posZ-10/	obj_natur_tree_conifer_esc1/posX10/posZ-10/			
 obj_natur_tree_conifer_esc1/posX-14/posZ-8/	obj_natur_tree_conifer_esc1/posX-12/posZ-8/	obj_natur_tree_conifer_esc1/posX-10/posZ-8/	obj_natur_tree_conifer_esc1/posX-8/posZ-8/	obj_natur_tree_conifer_esc1/posX-6/posZ-8/	obj_natur_tree_conifer_esc1/posX-4/posZ-8/	obj_natur_tree_conifer_esc1/posX-2/posZ-8/	obj_natur_tree_conifer_esc1/posX0/posZ-8/	obj_natur_tree_conifer_esc1/posX2/posZ-8/	obj_natur_tree_conifer_esc1/posX4/posZ-8/	obj_natur_tree_conifer_esc1/posX6/posZ-8/	obj_natur_tree_conifer_esc1/posX8/posZ-8/	obj_natur_tree_conifer_esc1/posX10/posZ-8/			
@@ -44,7 +27,24 @@ obj_natur_tree_conifer_esc1/posX-14/posZ-6/	obj_natur_tree_conifer_esc1/posX-12/
 obj_natur_tree_conifer_esc1/posX-14/posZ-6/	obj_natur_tree_conifer_esc1/posX-12/posZ-6/	obj_natur_tree_conifer_esc1/posX-10/posZ-6/	obj_natur_tree_conifer_esc1/posX-8/posZ-6/	obj_natur_tree_conifer_esc1/posX-6/posZ-6/	obj_natur_tree_conifer_esc1/posX-4/posZ-6/	obj_natur_tree_conifer_esc1/posX-2/posZ-6/	obj_natur_tree_conifer_esc1/posX0/posZ-6/	obj_natur_tree_conifer_esc1/posX2/posZ-6/	obj_natur_tree_conifer_esc1/posX4/posZ-6/	obj_natur_tree_conifer_esc1/posX6/posZ-6/	obj_natur_tree_conifer_esc1/posX8/posZ-6/	obj_natur_tree_conifer_esc1/posX10/posZ-6/			
 obj_natur_tree_conifer_esc1/posX-14/posZ-4/	obj_natur_tree_conifer_esc1/posX-12/posZ-4/	obj_natur_tree_conifer_esc1/posX-10/posZ-4/	obj_natur_tree_conifer_esc1/posX-8/posZ-4/	obj_natur_tree_conifer_esc1/posX-6/posZ-4/	obj_natur_tree_conifer_esc1/posX-4/posZ-4/	obj_natur_tree_conifer_esc1/posX-2/posZ-4/	obj_natur_tree_conifer_esc1/posX0/posZ-4/	obj_natur_tree_conifer_esc1/posX2/posZ-4/	obj_natur_tree_conifer_esc1/posX4/posZ-4/	obj_natur_tree_conifer_esc1/posX6/posZ-4/	obj_natur_tree_conifer_esc1/posX8/posZ-4/	obj_natur_tree_conifer_esc1/posX10/posZ-4/			
 obj_natur_tree_conifer_esc1/posX-14/posZ-2/	obj_natur_tree_conifer_esc1/posX-12/posZ-2/	obj_natur_tree_conifer_esc1/posX-10/posZ-2/	obj_natur_tree_conifer_esc1/posX-8/posZ-2/	obj_natur_tree_conifer_esc1/posX-6/posZ-2/	obj_natur_tree_conifer_esc1/posX-4/posZ-2/	obj_natur_tree_conifer_esc1/posX-2/posZ-2/	obj_natur_tree_conifer_esc1/posX0/posZ-2/	obj_natur_tree_conifer_esc1/posX2/posZ-2/	obj_natur_tree_conifer_esc1/posX4/posZ-2/	obj_natur_tree_conifer_esc1/posX6/posZ-2/	obj_natur_tree_conifer_esc1/posX8/posZ-2/	obj_natur_tree_conifer_esc1/posX10/posZ-2/			
-				obj_natur_druid_morning_star_esc4/posX14/posZ10/											
+obj_natur_tree_conifer_esc1/posX-14/posZ0/	obj_natur_tree_conifer_esc1/posX-12/posZ0/	obj_natur_tree_conifer_esc1/posX-10/posZ0/	obj_natur_tree_conifer_esc1/posX-8/posZ0/	obj_natur_tree_conifer_esc1/posX-6/posZ0/											
+obj_natur_tree_conifer_esc1/posX-14/posZ2/	obj_natur_tree_conifer_esc1/posX-12/posZ2/	obj_natur_tree_conifer_esc1/posX-10/posZ2/	obj_natur_tree_conifer_esc1/posX-8/posZ2/	obj_natur_tree_conifer_esc1/posX-6/posZ2/											
+obj_natur_tree_conifer_esc1/posX-14/posZ4/	obj_natur_tree_conifer_esc1/posX-12/posZ4/	obj_natur_tree_conifer_esc1/posX-10/posZ4/	obj_natur_tree_conifer_esc1/posX-8/posZ4/	obj_natur_tree_conifer_esc1/posX-6/posZ4/											
+obj_natur_tree_conifer_esc1/posX-14/posZ6/	obj_natur_tree_conifer_esc1/posX-12/posZ6/	obj_natur_tree_conifer_esc1/posX-10/posZ6/	obj_natur_tree_conifer_esc1/posX-8/posZ6/	obj_natur_tree_conifer_esc1/posX-6/posZ6/											
+obj_natur_tree_conifer_esc1/posX-14/posZ8/	obj_natur_tree_conifer_esc1/posX-12/posZ8/	obj_natur_tree_conifer_esc1/posX-10/posZ8/	obj_natur_tree_conifer_esc1/posX-8/posZ8/	obj_natur_tree_conifer_esc1/posX-6/posZ8/											
+obj_natur_tree_conifer_esc1/posX-14/posZ10/	obj_natur_tree_conifer_esc1/posX-12/posZ10/	obj_natur_tree_conifer_esc1/posX-10/posZ10/	obj_natur_tree_conifer_esc1/posX-8/posZ10/	obj_natur_tree_conifer_esc1/posX-6/posZ10/											
+obj_natur_tree_conifer_esc1/posX-14/posZ12/	obj_natur_tree_conifer_esc1/posX-12/posZ12/	obj_natur_tree_conifer_esc1/posX-10/posZ12/	obj_natur_tree_conifer_esc1/posX-8/posZ12/	obj_natur_tree_conifer_esc1/posX-6/posZ12/											
+															
+															
+															
+															
+															
+															
+															
+															
+															
+															
+															
 															
 															
 obj_natur_mossy_rock_esc5/posX-20/posZ-20/	obj_natur_mossy_rock_esc5/posX-15/posZ-20/	obj_natur_mossy_rock_esc5/posX-10/posZ-20/	obj_natur_mossy_rock_esc5/posX-5/posZ-20/	obj_natur_mossy_rock_esc5/posX0/posZ-20/	obj_natur_mossy_rock_esc5/posX5/posZ-20/	obj_natur_mossy_rock_esc5/posX10/posZ-20/	obj_natur_mossy_rock_esc5/posX15/posZ-20/	obj_natur_mossy_rock_esc5/posX20/posZ-20/	|						

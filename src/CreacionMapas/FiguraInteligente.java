@@ -1,6 +1,5 @@
 package CreacionMapas;
 
-import InteligenciaArtificial.*;
 import CreacionMapas.BigMind;
 import javax.media.j3d.*;
 import javax.vecmath.*;
@@ -123,7 +122,7 @@ public class FiguraInteligente {
                 }
                 listaObjetosFisicos.remove(this.identificadorFigura);
             } catch (Exception e) {
-                System.out.println("Ya eliminado");
+//                System.out.println("Error: Ya eliminado");
             }
         }
     }

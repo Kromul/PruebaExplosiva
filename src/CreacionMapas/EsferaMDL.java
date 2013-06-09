@@ -1,7 +1,8 @@
 package CreacionMapas;
 
-import InteligenciaArtificial.*;
 import CreacionMapas.BigMind;
+import Libreria3D.MiLibreria3D;
+import static Libreria3D.MiLibreria3D.getOBJ;
 import utilidades.CapabilitiesMDL;
 import com.bulletphysics.collision.dispatch.*;
 import com.bulletphysics.collision.shapes.*;
@@ -10,6 +11,8 @@ import com.sun.j3d.utils.geometry.Sphere;
 import figuras.DeteccionControlPersonaje;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.media.j3d.*;
 import javax.vecmath.*;
 import net.sf.nwn.loader.AnimationBehavior;
@@ -24,7 +27,7 @@ public class EsferaMDL extends FiguraInteligente {
     public float radio, alturaP, alturaDeOjos;
     boolean esPersonaje;
 
-    public EsferaMDL(String ficheroMDL, float radio, BranchGroup conjunto, ArrayList<FiguraInteligente> listaObjetos, BigMind juego, boolean esPersonaje) {
+    public EsferaMDL(String ficheroMDL, float radio, BranchGroup conjunto, ArrayList<FiguraInteligente> listaObjetos, BigMind juego, boolean esPersonaje, Vector3f posicionInicial) {
         super(conjunto, listaObjetos, juego);
         this.esPersonaje = esPersonaje;
         //Creando una apariencia
@@ -33,12 +36,10 @@ public class EsferaMDL extends FiguraInteligente {
         TextureAttributes texAttr = new TextureAttributes();
         texAttr.setTextureMode(TextureAttributes.MODULATE);
         apariencia.setTextureAttributes(texAttr);
-
+        
         //Creacion de la forma visual MDL
-        //nombre = "figura_MDL_" + identificador;
-        //Sphere figuraVisual = new Sphere(radio);
-//     TransformGroup figuraVisual =  crearObjetoMDL(ficheroMDL, radio*2);
-        Sphere figuraVisual = new Sphere(radio, Sphere.GENERATE_TEXTURE_COORDS, 60, apariencia);
+        Node figuraVisual = new Sphere(radio, Sphere.GENERATE_TEXTURE_COORDS, 60, apariencia);
+//        System.out.println("============CREADO EL MICROBIO==================");
         SphereShape figuraFisica = new SphereShape(radio);
         ramaFisica = new CollisionObject();
         ramaFisica.setCollisionShape(figuraFisica);
