@@ -43,7 +43,7 @@ public class DeteccionColisionPersonaje extends Behavior {
         while (criteria.hasMoreElements()) {
             WakeupCriterion theCriterion = (WakeupCriterion) criteria.nextElement();
             if (theCriterion instanceof WakeupOnCollisionEntry) {
-                String theLeaf = ((WakeupOnCollisionEntry) theCriterion).getTriggeringPath().getObject().getParent().getName();
+                String theLeaf = ((WakeupOnCollisionEntry) theCriterion).getTriggeringPath().getObject().getName();
                 if (theLeaf != null) {
                     System.out.println("Choque con objeto " + theLeaf);
                     //Código en el que se comprueba la entrada de la colisión y se realiza la acción necesaria

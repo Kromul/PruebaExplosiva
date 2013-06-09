@@ -47,7 +47,7 @@ public class EsferaMDL extends FiguraInteligente {
         aparienciaCaja.setTransparencyAttributes(ta);
 
         //Creacion de la forma visual MDL
-        ColorCube hitBox = new ColorCube(radio);
+        ColorCube hitBox = new ColorCube(radio*2);
         hitBox.setAppearance(aparienciaCaja);
         hitBox.setName("Esfera");
         Node figuraVisual = new Sphere(radio, Sphere.GENERATE_TEXTURE_COORDS, 60, apariencia);

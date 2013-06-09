@@ -39,9 +39,9 @@ public class SeleccionadorRaton extends PickMouseBehavior {
                     System.out.println("Objeto seleccionado:" + nombre);
 //                HebraCreadora creadora = new HebraCreadora(70, 0.9f, juego.conjunto, juego.listaObjetosFisicos, false, this, juego.mundoFisico);
                     juego.creadora.run();
+                    lanzado = true;
+                    this.juego.eliminarCasa = true;
                 }
-                lanzado = true;
-                this.juego.eliminarCasa = true;
             }
         }
     }
