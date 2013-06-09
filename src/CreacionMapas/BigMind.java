@@ -109,7 +109,6 @@ public class BigMind extends JFrame implements Runnable {
         MiLibreria3D.colocarCamara(universo, new Point3d(-15, 10, 18), new Point3d(0, 0, 0));
 
         hebra.start();
-        creadora = new HebraCreadora(70, 0.9f, conjunto, listaObjetosFisicos, false, this, mundoFisico);
     }
 
     BranchGroup crearEscena() {
@@ -171,6 +170,9 @@ public class BigMind extends JFrame implements Runnable {
         tgCasa.addChild(casa);
         tgCasa.setName("Casa");
         rootBG.addChild(tgCasa);
+        
+        // hebra para lanzar una piedra sobre la casa de la escena
+        creadora = new HebraCreadora(70, 0.9f, conjunto, listaObjetosFisicos, false, this, mundoFisico);
 
         return rootBG;
     }
@@ -725,7 +727,7 @@ public class BigMind extends JFrame implements Runnable {
             Figura fig;
             fig = new EsferaMDL("src/resources/objetosOBJ/ataques/war_axe.obj", radio, conjunto, listaObjetosFisicos, juego);
             if (!juego.actualizandoFisicas) {
-                fig.crearPropiedades(masa, elasticidad, dumpingLineal, 2, 5, 9, mundoFisico);
+                fig.crearPropiedades(masa, elasticidad, dumpingLineal, 4, 10, 11, mundoFisico);
             }
         }
     }
