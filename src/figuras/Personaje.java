@@ -26,7 +26,7 @@ public class Personaje extends Figura {
     Vector3d direccion = new Vector3d(0, 0, 10);
     public float radio, alturaP, alturaDeOjos;
     boolean esPersonaje;
-    SphereShape figuraFisica;
+    BoxShape figuraFisica;
     Box hitBox;
 
     public Personaje(float radio, BranchGroup conjunto, ArrayList<Figura> listaObjetos, BigMind juego, boolean esPersonaje) {
@@ -48,7 +48,7 @@ public class Personaje extends Figura {
         //Creacion de la forma visual MDL
         TransformGroup figuraVisual = crearObjetoMDL(radio * 2);
         figuraVisual.setCollidable(false);
-        figuraFisica = new SphereShape(radio * 4);
+        figuraFisica = new BoxShape(new Vector3f(radio, radio*4, radio));
         ramaFisica = new CollisionObject();
         ramaFisica.setCollisionShape(figuraFisica);
         ramaVisible.addChild(desplazamientoFigura);

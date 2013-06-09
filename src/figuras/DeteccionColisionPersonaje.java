@@ -1,6 +1,5 @@
 package figuras;
 
-import CreacionMapas.Figura;
 import com.sun.j3d.utils.geometry.Box;
 import java.util.Enumeration;
 import javax.media.j3d.Behavior;
@@ -49,7 +48,6 @@ public class DeteccionColisionPersonaje extends Behavior {
                     //Código en el que se comprueba la entrada de la colisión y se realiza la acción necesaria
                 }
             } else if (theCriterion instanceof WakeupOnCollisionExit) {
-                System.out.println("SALIDA");
                 //Código en el que se comprueba la salida de la colisión y se realiza la acción necesaria 
             }
             wakeupOn(CriterioUnificador);

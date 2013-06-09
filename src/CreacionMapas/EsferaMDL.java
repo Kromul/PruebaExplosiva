@@ -1,19 +1,13 @@
 package CreacionMapas;
 
-import CreacionMapas.BigMind;
-import Libreria3D.MiLibreria3D;
-import static Libreria3D.MiLibreria3D.getOBJ;
 import utilidades.CapabilitiesMDL;
 import com.bulletphysics.collision.dispatch.*;
 import com.bulletphysics.collision.shapes.*;
 import com.sun.j3d.loaders.Scene;
 import com.sun.j3d.utils.geometry.ColorCube;
 import com.sun.j3d.utils.geometry.Sphere;
-import figuras.DeteccionControlPersonaje;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.media.j3d.*;
 import javax.vecmath.*;
 import net.sf.nwn.loader.AnimationBehavior;

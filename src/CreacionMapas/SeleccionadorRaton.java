@@ -3,13 +3,10 @@ package CreacionMapas;
 /**
  * @author Alejandro Ruiz
  */
-import com.bulletphysics.dynamics.DiscreteDynamicsWorld;
 import javax.media.j3d.*;
 import com.sun.j3d.utils.picking.behaviors.*;
 import com.sun.j3d.utils.picking.*;
-import java.util.ArrayList;
 import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
 
 public class SeleccionadorRaton extends PickMouseBehavior {
 

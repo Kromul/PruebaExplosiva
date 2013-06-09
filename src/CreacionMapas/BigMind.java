@@ -339,8 +339,8 @@ public class BigMind extends JFrame implements Runnable {
         this.mostrandoFisicas = false;
         //MOSTRAR CÁMARA
         Point3d objetivo = new Point3d(personaje.posiciones[0], personaje.posiciones[1], personaje.posiciones[2]);
-        Point3d posicion = new Point3d(personaje.posiciones[0], personaje.posiciones[1] + 5, -(personaje.posiciones[2] + 10.3));
-//        colocarCamaraDinamico(posicion, objetivo);
+        Point3d posicion = new Point3d(personaje.posiciones[0], personaje.posiciones[1] + 7, (personaje.posiciones[2] - 13));
+        colocarCamaraDinamico(posicion, objetivo);
     }
 
     public void run() {

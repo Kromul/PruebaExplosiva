@@ -1,7 +1,6 @@
 package CreacionMapas;
 
 import Libreria3D.MiLibreria3D;
-import Libreria3D.MiLibreria3D;
 import javax.media.j3d.*;
 import javax.vecmath.*;
 import java.util.ArrayList;
