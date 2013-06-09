@@ -1,6 +1,7 @@
 package figuras;
 
 import CreacionMapas.Figura;
+import CreacionMapas.ProjectExplosion;
 import java.awt.AWTEvent;
 import java.awt.event.KeyEvent;
 import java.util.Enumeration;
@@ -11,13 +12,14 @@ import javax.media.j3d.*;
  */
 public class DeteccionControlPersonaje extends javax.media.j3d.Behavior {
 
+    ProjectExplosion juego;
     Figura personaje;
     WakeupOnAWTEvent presionada = new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED);
     WakeupOnAWTEvent liberada = new WakeupOnAWTEvent(KeyEvent.KEY_RELEASED);
     WakeupCondition keepUpCondition = null;
     WakeupCriterion[] continueArray = new WakeupCriterion[2];
 
-    public DeteccionControlPersonaje(Figura _personaje) {
+    public DeteccionControlPersonaje(Personaje _personaje) {
         personaje = _personaje;
         continueArray[0] = liberada;
         continueArray[1] = presionada;
@@ -40,7 +42,6 @@ public class DeteccionControlPersonaje extends javax.media.j3d.Behavior {
                         KeyEvent ek = (KeyEvent) events[n];
                         if (ek.getID() == KeyEvent.KEY_PRESSED) {
                             if (ek.getKeyCode() == KeyEvent.VK_SHIFT) {
-                                personaje.corriendo = true;
                             } else if (ek.getKeyChar() == 'w') {
                                 personaje.adelante = true;
                                 personaje.parar = false;
@@ -56,8 +57,6 @@ public class DeteccionControlPersonaje extends javax.media.j3d.Behavior {
                             }
                         } else if (ek.getID() == KeyEvent.KEY_RELEASED) {
                             if (ek.getKeyCode() == KeyEvent.VK_SHIFT) {
-                                personaje.corriendo = false;
-                                personaje.parar = true;
                             } else if (ek.getKeyChar() == 'w') {
                                 personaje.adelante = false;
                                 personaje.parar = true;

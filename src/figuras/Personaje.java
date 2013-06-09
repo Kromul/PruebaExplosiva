@@ -49,23 +49,23 @@ public class Personaje extends Figura {
         //Creacion de la forma visual MDL
         TransformGroup figuraVisual = crearObjetoMDL(radio * 2);
         figuraVisual.setCollidable(false);
-        figuraFisica = new BoxShape(new Vector3f(radio, radio*4, radio));
+        figuraFisica = new BoxShape(new Vector3f(radio, radio * 4, radio));
         ramaFisica = new CollisionObject();
         ramaFisica.setCollisionShape(figuraFisica);
         ramaVisible.addChild(desplazamientoFigura);
         desplazamientoFigura.addChild(figuraVisual);
         desplazamientoFigura.addChild(tgHitBox);
 
-        //Creacion del detector de teclas asociado
-        if (esPersonaje) {
-            DeteccionControlPersonaje mueve = new DeteccionControlPersonaje(this);
-            mueve.setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
-            ramaVisible.addChild(mueve);
-        }
         //Creacion del detector de colisiones asociado
         if (esPersonaje) {
             DeteccionColisionPersonaje detector = new DeteccionColisionPersonaje(this);
             ramaVisible.addChild(detector);
+        }
+        //Creamos el control de teclado
+        if (esPersonaje) {
+            DeteccionControlPersonaje mueve = new DeteccionControlPersonaje(this);
+            mueve.setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
+            ramaVisible.addChild(mueve);
         }
     }
 

@@ -44,18 +44,14 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
-/**
- *
- * @author papa
- */
 public class ProjectExplosion extends JFrame implements Runnable {
 
-    SimpleUniverse universo;
     //Constantes
     public final Point3d POS_CAMARA = new Point3d(0d, 5d, 10.3d);
     final String NO_EXISTE = "archivo no existente";
     final Float ESPACIO_Z = 3.0f; // espacio en el eje z entre los objetos
     //Atributos
+    SimpleUniverse universo;
     public Canvas3D zonaDibujo;
     TransformGroup TGcamara = new TransformGroup();
     Thread hebra = new Thread(this);
@@ -74,6 +70,7 @@ public class ProjectExplosion extends JFrame implements Runnable {
     TransformGroup casaVisualTG;
     boolean victoria = false;
     boolean derrota = false;
+    boolean vistaPajaro = false;
     // Escena
     String matrixScene[][];
     // Inteligencia Artificial
@@ -359,17 +356,14 @@ public class ProjectExplosion extends JFrame implements Runnable {
         this.mostrandoFisicas = false;
 
         //MOSTRAR CÁMARA
-        if (!victoria && !derrota) {
-            Point3d objetivo = new Point3d(personaje.posiciones[0], personaje.posiciones[1], personaje.posiciones[2]);
-            Point3d posicion = new Point3d(personaje.posiciones[0], personaje.posiciones[1] + 7, (personaje.posiciones[2] - 13));
-            colocarCamaraDinamico(posicion, objetivo);
-        } else if (victoria) {
+        if (victoria) {
             juegoSuperado();
         } else if (derrota) {
             juegoFracasado();
         }
     }
 
+    @Override
     public void run() {
         cargarContenido();
         float dt = 3f / 100f;
