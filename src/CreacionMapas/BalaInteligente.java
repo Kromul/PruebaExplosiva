@@ -13,8 +13,7 @@ import weka.core.Instance;
 import weka.core.Instances;
 
 /**
- *
- * @author papa
+ * @author Pedro Reyes
  */
 public class BalaInteligente {
 
@@ -24,7 +23,7 @@ public class BalaInteligente {
     float masaBalon = 1;
     float masa = 1f;
     // Variables del mundo
-    BigMind juego;
+    ProjectExplosion juego;
     Vector3f posicion;
     boolean balaCreada;
     boolean lanzado;
@@ -48,7 +47,7 @@ public class BalaInteligente {
     float fuerzaHorizontalX = 0, fuerzaVerticalX = 0;
     float fuerzaVerticalY = 0;
 
-    public BalaInteligente(BigMind juego, Vector3f posicion) {
+    public BalaInteligente(ProjectExplosion juego, Vector3f posicion) {
         this.juego = juego;
         cargarContenidoAprendizajeInicial();
         lanzado = false;

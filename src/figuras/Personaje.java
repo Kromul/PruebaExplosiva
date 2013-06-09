@@ -1,7 +1,7 @@
 package figuras;
 
 import CreacionMapas.Figura;
-import CreacionMapas.BigMind;
+import CreacionMapas.ProjectExplosion;
 import Libreria3D.MiLibreria3D;
 import utilidades.CapabilitiesMDL;
 import com.bulletphysics.collision.dispatch.*;
@@ -16,7 +16,7 @@ import net.sf.nwn.loader.AnimationBehavior;
 import net.sf.nwn.loader.NWNLoader;
 
 /**
- * @author Alejandro Ruiz Moyano
+ * @author Alejandro Ruiz
  */
 public class Personaje extends Figura {
 
@@ -28,8 +28,9 @@ public class Personaje extends Figura {
     boolean esPersonaje;
     BoxShape figuraFisica;
     Box hitBox;
+    public boolean impactoEsfera = false;
 
-    public Personaje(float radio, BranchGroup conjunto, ArrayList<Figura> listaObjetos, BigMind juego, boolean esPersonaje) {
+    public Personaje(float radio, BranchGroup conjunto, ArrayList<Figura> listaObjetos, ProjectExplosion juego, boolean esPersonaje) {
         super(conjunto, listaObjetos, juego);
         esMDL = true;
         this.esPersonaje = esPersonaje;

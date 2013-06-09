@@ -13,6 +13,10 @@ import javax.vecmath.*;
 import net.sf.nwn.loader.AnimationBehavior;
 import net.sf.nwn.loader.NWNLoader;
 
+/**
+ * @author Pedro Reyes
+ */
+
 public class EsferaMDL extends FiguraInteligente {
 
     public Scene escenaPersonaje1;
@@ -22,7 +26,7 @@ public class EsferaMDL extends FiguraInteligente {
     public float radio, alturaP, alturaDeOjos;
     boolean esPersonaje;
 
-    public EsferaMDL(String ficheroMDL, float radio, BranchGroup conjunto, ArrayList<FiguraInteligente> listaObjetos, BigMind juego, boolean esPersonaje, Vector3f posicionInicial) {
+    public EsferaMDL(String ficheroMDL, float radio, BranchGroup conjunto, ArrayList<FiguraInteligente> listaObjetos, ProjectExplosion juego, boolean esPersonaje, Vector3f posicionInicial) {
         super(conjunto, listaObjetos, juego);
         this.esPersonaje = esPersonaje;
 

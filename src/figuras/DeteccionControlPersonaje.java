@@ -7,7 +7,7 @@ import java.util.Enumeration;
 import javax.media.j3d.*;
 
 /**
- * @author Alejandro Ruiz Moyano
+ * @author Alejandro Ruiz
  */
 public class DeteccionControlPersonaje extends javax.media.j3d.Behavior {
 
@@ -24,10 +24,12 @@ public class DeteccionControlPersonaje extends javax.media.j3d.Behavior {
         keepUpCondition = new WakeupOr(continueArray);
     }
 
+    @Override
     public void initialize() {
         wakeupOn(keepUpCondition);
     }
 
+    @Override
     public void processStimulus(Enumeration criteria) {
         while (criteria.hasMoreElements()) {
             WakeupCriterion ster = (WakeupCriterion) criteria.nextElement();

@@ -7,6 +7,9 @@ import com.bulletphysics.collision.dispatch.*;
 import com.bulletphysics.dynamics.*;
 import com.bulletphysics.linearmath.*;
 
+/**
+ * @author Pedro Reyes
+ */
 public class FiguraInteligente {
 
     public int identificadorFigura, identificadorFisico;
@@ -24,7 +27,7 @@ public class FiguraInteligente {
     public BranchGroup conjunto;
     DiscreteDynamicsWorld mundoFisico;
     Matrix3f matrizRotacionPersonaje = new Matrix3f();
-    BigMind juego;
+    ProjectExplosion juego;
     //atributos opcionales para dotar a la figura de cierta inteligencia
     public Vector3f localizacionObjetivo;
     public int estadoFigura;                    //Dependiendo del estado de la figura, su entorno, y del juego, la figura tiene un comportamiento dado.
@@ -33,7 +36,7 @@ public class FiguraInteligente {
     //Si adem�s, hubiera que realizar uan accion particular (ej. Dispararle, darle alimento) se necesitaria otro atributo (ej. TareaObjetivo)
     float aceleracionMuscular;
 
-    public FiguraInteligente(BranchGroup conjunto, ArrayList<FiguraInteligente> listaObjetosFisicos, BigMind juego) {
+    public FiguraInteligente(BranchGroup conjunto, ArrayList<FiguraInteligente> listaObjetosFisicos, ProjectExplosion juego) {
         this.listaObjetosFisicos = listaObjetosFisicos;
         this.conjunto = conjunto;
         this.juego = juego;
@@ -107,7 +110,6 @@ public class FiguraInteligente {
 
     public void actualizarLocalizacion(float dt) {
         //Actualizar los datos de localizacion no JBullet
-        
     }
 
     public void remover() {

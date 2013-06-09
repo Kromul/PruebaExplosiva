@@ -11,7 +11,7 @@ import javax.media.j3d.WakeupOr;
 import javax.vecmath.Point3d;
 
 /**
- * @author Alejandro Ruiz Moyano
+ * @author Alejandro Ruiz
  */
 public class DeteccionColisionPersonaje extends Behavior {
 
@@ -26,6 +26,7 @@ public class DeteccionColisionPersonaje extends Behavior {
         setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
     }
 
+    @Override
     public void initialize() {
         Criterios = new WakeupCriterion[2];
         WakeupOnCollisionEntry chocaPersonaje = new WakeupOnCollisionEntry(objetoReferencia, WakeupOnCollisionEntry.USE_GEOMETRY);
@@ -38,14 +39,16 @@ public class DeteccionColisionPersonaje extends Behavior {
         wakeupOn(CriterioUnificador);
     }
 
+    @Override
     public void processStimulus(Enumeration criteria) {
         while (criteria.hasMoreElements()) {
             WakeupCriterion theCriterion = (WakeupCriterion) criteria.nextElement();
             if (theCriterion instanceof WakeupOnCollisionEntry) {
                 String theLeaf = ((WakeupOnCollisionEntry) theCriterion).getTriggeringPath().getObject().getName();
                 if (theLeaf != null) {
-                    System.out.println("Choque con objeto " + theLeaf);
-                    //Código en el que se comprueba la entrada de la colisión y se realiza la acción necesaria
+                    if (theLeaf.equalsIgnoreCase("esfera")) {
+                        this.personaje.impactoEsfera = true;
+                    }
                 }
             } else if (theCriterion instanceof WakeupOnCollisionExit) {
                 //Código en el que se comprueba la salida de la colisión y se realiza la acción necesaria 

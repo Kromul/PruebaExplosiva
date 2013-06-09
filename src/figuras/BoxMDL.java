@@ -18,13 +18,12 @@ import javax.vecmath.Vector3f;
 import net.sf.nwn.loader.AnimationBehavior;
 import net.sf.nwn.loader.NWNLoader;
 import CreacionMapas.Figura;
-import CreacionMapas.BigMind;
+import CreacionMapas.ProjectExplosion;
 import javax.media.j3d.Node;
 import utilidades.CapabilitiesMDL;
 
 /**
- *
- * @author papa
+ * @author Pedro Reyes
  */
 public class BoxMDL extends Figura {
 
@@ -35,7 +34,7 @@ public class BoxMDL extends Figura {
     public float alturaP, alturaDeOjos;
     public float ancho, alto, largo;
 
-    public BoxMDL(String ficheroMDL, float ancho, float alto, float largo, BranchGroup conjunto, ArrayList<Figura> listaObjetos, BigMind juego, String textura, boolean mostrarMDL) {
+    public BoxMDL(String ficheroMDL, float ancho, float alto, float largo, BranchGroup conjunto, ArrayList<Figura> listaObjetos, ProjectExplosion juego, String textura, boolean mostrarMDL) {
         super(conjunto, listaObjetos, juego);
         esMDL = true;
         //Variables del objeto no visualizado

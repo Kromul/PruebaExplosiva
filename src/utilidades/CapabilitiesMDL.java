@@ -1,6 +1,6 @@
 package utilidades;
 
-import CreacionMapas.BigMind;
+import CreacionMapas.ProjectExplosion;
 import com.sun.j3d.demos.utils.scenegraph.traverser.ProcessNodeInterface;
 import com.sun.j3d.demos.utils.scenegraph.traverser.TreeScan;
 import javax.media.j3d.Appearance;
@@ -16,12 +16,13 @@ import com.sun.j3d.utils.picking.PickTool;
 import java.util.Enumeration;
 
 /**
- * @author Alejandro Ruiz Moyano
+ * @author Alejandro Ruiz
  */
 public class CapabilitiesMDL {
 
     String dd;
     private static ProcessNodeInterface capabilityProcessor = new ProcessNodeInterface() {
+        @Override
         public void processNode(Node node) {
             if (node instanceof Group) {
                 node.setCapability(Group.ALLOW_CHILDREN_READ);
@@ -64,7 +65,7 @@ public class CapabilitiesMDL {
         TreeScan.findNode(bg, new Class[]{Group.class, Shape3D.class}, capabilityProcessor, false, false);
     }
 
-    public static void etiquetarTodo(Node nodoR, int nivel, BigMind fp, String etiqueta) {
+    public static void etiquetarTodo(Node nodoR, int nivel, ProjectExplosion fp, String etiqueta) {
 
         if (nodoR instanceof BranchGroup) {
             Enumeration enumeracion = ((BranchGroup) nodoR).getAllChildren(); ////.getAllChildren();
@@ -76,12 +77,6 @@ public class CapabilitiesMDL {
                 }
                 if ((objeto instanceof Shape3D) && (nivel < 100)) {
                     ((Shape3D) objeto).setUserData(etiqueta);
-                    //ColisionDetector2 cd = new ColisionDetector2 ((Shape3D) objeto, fp.limites, fp);
-                    //  ((Shape3D) objeto).setCapability(Node.ENABLE_PICK_REPORTING);
-                    //PickTool.setCapabilities( ((Shape3D) objeto), PickTool.INTERSECT_FULL);
-                    //  ((Shape3D) objeto).setPickable(true);
-                    //    objRoot.addChild(cd);
-                    //partesPersonaje1.add((Shape3D) objeto);
                 }
             }
         }
@@ -99,12 +94,6 @@ public class CapabilitiesMDL {
                 }
                 if ((objeto instanceof Shape3D) && (nivel < 100)) {
                     ((Shape3D) objeto).setUserData(etiqueta);
-                    //ColisionDetector2 cd = new ColisionDetector2 ((Shape3D) objeto, fp.limites, fp);
-                    //  ((Shape3D) objeto).setCapability(Node.ENABLE_PICK_REPORTING);
-                    //    PickTool.setCapabilities( ((Shape3D) objeto), PickTool.INTERSECT_FULL);
-                    //     ((Shape3D) objeto).setPickable(true);
-                    //    objRoot.addChild(cd);
-                    //partesPersonaje1.add((Shape3D) objeto);
                 }
             }
         }

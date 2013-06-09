@@ -1,5 +1,9 @@
 package CreacionMapas;
 
+/**
+ * @author Pedro Reyes
+ * @author Alejandro Ruiz
+ */
 import Libreria3D.MiLibreria3D;
 import com.bulletphysics.collision.broadphase.AxisSweep3;
 import com.bulletphysics.collision.dispatch.CollisionConfiguration;
@@ -44,12 +48,13 @@ import javax.vecmath.Vector3f;
  *
  * @author papa
  */
-public class BigMind extends JFrame implements Runnable {
+public class ProjectExplosion extends JFrame implements Runnable {
 
     SimpleUniverse universo;
-    // Personaje
     //Constantes
     public final Point3d POS_CAMARA = new Point3d(0d, 5d, 10.3d);
+    final String NO_EXISTE = "archivo no existente";
+    final Float ESPACIO_Z = 3.0f; // espacio en el eje z entre los objetos
     //Atributos
     public Canvas3D zonaDibujo;
     TransformGroup TGcamara = new TransformGroup();
@@ -59,12 +64,16 @@ public class BigMind extends JFrame implements Runnable {
     ArrayList<CreacionMapas.Figura> listaObjetosNoFisicos = new ArrayList<Figura>();
     DiscreteDynamicsWorld mundoFisico;
     BranchGroup conjunto;
-    Figura personaje;
+    Personaje personaje;
     public boolean actualizandoFisicas;
     public boolean mostrandoFisicas;
-    // Constantes
-    final String NO_EXISTE = "archivo no existente";
-    final Float ESPACIO_Z = 3.0f; // espacio en el eje z entre los objetos
+    HebraCreadora creadora;
+    BranchGroup casaVisual;
+    boolean eliminarCasa;
+    boolean casaEliminada;
+    TransformGroup casaVisualTG;
+    boolean victoria = false;
+    boolean derrota = false;
     // Escena
     String matrixScene[][];
     // Inteligencia Artificial
@@ -73,13 +82,8 @@ public class BigMind extends JFrame implements Runnable {
     float posX;
     float posY;
     float posZ;
-    HebraCreadora creadora;
-    BranchGroup casaVisual;
-    boolean eliminarCasa;
-    boolean casaEliminada;
-    TransformGroup casaVisualTG;
 
-    public BigMind() {
+    public ProjectExplosion() {
         CollisionConfiguration collisionConfiguration = new DefaultCollisionConfiguration();
         CollisionDispatcher dispatcher = new CollisionDispatcher(collisionConfiguration);
         Vector3f worldAabbMin = new Vector3f(-10000, -10000, -10000);
@@ -115,9 +119,8 @@ public class BigMind extends JFrame implements Runnable {
         hebra.start();
     }
 
-    BranchGroup crearEscena() {
+    private BranchGroup crearEscena() {
         BranchGroup rootBG = new BranchGroup();
-        BranchGroup escenaBG = new BranchGroup();
 
         //Añadimos conjunto
         conjunto = new BranchGroup();
@@ -135,10 +138,10 @@ public class BigMind extends JFrame implements Runnable {
         rootBG.addChild(crearMundo());
 
         // Elementos por defecto de la escena
-        String rutaFondo = System.getProperty("user.dir") + "/" + "src/resources/texturas/textura_cielo.jpg";
+        //String rutaFondo = System.getProperty("user.dir") + "/" + "src/resources/texturas/textura_cielo.jpg";
         String rutaSonido = "file://localhost/" + System.getProperty("user.dir") + "/" + "src/resources/sonido/magic_bells.wav";
         String rutaSuelo = System.getProperty("user.dir") + "/" + "src/resources/texturas/textura_hielo.jpg";
-        MiLibreria3D.setBackground(rootBG, rutaFondo, this, 1);
+        //MiLibreria3D.setBackground(rootBG, rutaFondo, this, 1);
 //        MiLibreria3D.addSound(universo, rootBG, rutaSonido);
         try {
 //            rootBG.addChild(MiLibreria3D.crear(new Vector3f(0.0f, -1.0f, 0.0f),
@@ -146,7 +149,6 @@ public class BigMind extends JFrame implements Runnable {
 //                    MiLibreria3D.getTexture(rutaSuelo, this),
 //                    null,
 //                    1.0f));
-            float radio = 6;
             float masaConstruccion = 0;
             float elasticidad = 0.3f;           //Capacidad de rebotar. 1 para grandes rebote   0 para simular gotas de liquidos espesos
             float dumpingLineal = 0.99f;    //Perdidad de velodidad al desplazarse (friccion del aire): 0 para mantener velocidad. 0.99 para perder velocidad (liquidos espesos)
@@ -154,7 +156,7 @@ public class BigMind extends JFrame implements Runnable {
             Figura construccion = new BoxMDL("objetosMDL/Iron_Golem.mdl", 20.0f, 1.0f, 20.0f, conjunto, listaObjetosFisicos, this, "texturas//ladrillo.jpg", false);
             construccion.crearPropiedades(masaConstruccion, elasticidad, dumpingLineal, 0.0f, -1.0f, 0.0f, mundoFisico);
         } catch (Exception ex) {
-            Logger.getLogger(BigMind.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProjectExplosion.class.getName()).log(Level.SEVERE, null, ex);
         }
         rootBG.addChild(MiLibreria3D.CrearEjesCoordenada());
         rootBG.addChild(MiLibreria3D.getDefaultIlumination());
@@ -175,10 +177,10 @@ public class BigMind extends JFrame implements Runnable {
         tgCasa.setName("Casa");
         rootBG.addChild(tgCasa);
 
-        // hebra para lanzar una piedra sobre la casa de la escena
+        //Hebra para lanzar una piedra sobre la casa de la escena
         creadora = new HebraCreadora(70, 0.9f, conjunto, listaObjetosFisicos, false, this, mundoFisico);
 
-        // hago una variable para la casa para borrarla cuando el asteroide choque con ella
+        //Hago una variable para la casa para borrarla cuando el asteroide choque con ella
         float escala = 2.5f;
         eliminarCasa = false;
         casaEliminada = false;
@@ -198,7 +200,7 @@ public class BigMind extends JFrame implements Runnable {
                     System.getProperty("user.dir") + "/" + "src/resources/objetosOBJ/" + "edificios" + "/" + "granero" + ".obj",
                     escala);
         } catch (Exception ex) {
-            Logger.getLogger(BigMind.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProjectExplosion.class.getName()).log(Level.SEVERE, null, ex);
         }
         float ancho = 0.75f;
         float alto = 0.70f;
@@ -209,7 +211,32 @@ public class BigMind extends JFrame implements Runnable {
                 new Vector3f(2 + (ancho * escala), 0 + (alto * escala), 9 + (largo * escala))));
         rootBG.addChild(casaVisualTG);
 
+        //Creamos los finales
+        rootBG.addChild(crearFinales());
+
         return rootBG;
+    }
+
+    public BranchGroup crearFinales() {
+        BranchGroup finales = new BranchGroup();
+
+        //Creación de los finales
+        TransformGroup victoria = MiLibreria3D.crearTextoFinal("VICTORIA", true);
+        TransformGroup derrota = MiLibreria3D.crearTextoFinal("DERROTA", false);
+        victoria.setTransform(MiLibreria3D.trasladarDinamico(new Vector3f(-2.5f, 59f, 60f)));
+        derrota.setTransform(MiLibreria3D.trasladarDinamico(new Vector3f(-2.5f, 89f, 90f)));
+        finales.addChild(victoria);
+        finales.addChild(derrota);
+
+        return finales;
+    }
+
+    public void juegoSuperado() {
+        colocarCamaraDinamico(new Point3d(0d, 65d, 70.3d), new Point3d(0d, 60d, 60d));
+    }
+
+    public void juegoFracasado() {
+        colocarCamaraDinamico(new Point3d(0d, 95d, 100.3d), new Point3d(0d, 90d, 90d));
     }
 
     void cargarContenido() {
@@ -220,14 +247,9 @@ public class BigMind extends JFrame implements Runnable {
         posY = 5f;
         posZ = -12f;
         float elasticidad = 0.5f;
-        float dumpingLineal = 0.5f;
         personaje = new Personaje(radio, conjunto, listaObjetosFisicos, this, true);
         personaje.crearPropiedades(masa, elasticidad, 0.5f, posX, posY, posZ, mundoFisico);
         personaje.cuerpoRigido.setDamping(0.7f, 0.9f);
-
-        //--------
-//        creadora = new HebraCreadora(70, 0.9f, conjunto, listaObjetosFisicos, false, this, mundoFisico);
-//        creadora.start();
 
         // Creamos el cañon
         // Nota: la posicion de inicio de la bola ha de ser positiva en todos los ejes
@@ -241,7 +263,6 @@ public class BigMind extends JFrame implements Runnable {
 
     void actualizar(float dt) {
         //ACTUALIZAR EL ESTADO DEL JUEGO
-//        try{
         if (eliminarCasa) {
             System.out.println("==================");
             System.out.println("CASA ELIMINADA");
@@ -251,15 +272,15 @@ public class BigMind extends JFrame implements Runnable {
             Transform3D t = new Transform3D();
             t.set(new Vector3d(0d, -10d, 0d));
             casaVisualTG.setTransform(t);
+            victoria = true;
+        }
+        if (personaje.impactoEsfera) {
+            derrota = true;
         }
         bala.actualizar(posInicialBala, new Vector3f(personaje.posiciones));
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
 
         //ACTUALIZAR DATOS DE FUERZAS DEL PERSONAJE CONTROLADO POR EL JUGADOR
         if (personaje != null) {
-            float fuerzaElevacion = 0, fuerzaLateral = 0;
             float fuerzaPedroZ = 0, fuerzaPedroX = 0;
             float factorFuerza = 4;
             float posX = personaje.posiciones[0];
@@ -267,17 +288,17 @@ public class BigMind extends JFrame implements Runnable {
 
             if (personaje.adelante) {
                 fuerzaPedroZ = personaje.masa * factorFuerza * 2.5f;
-            }else if (personaje.atras) {
+            } else if (personaje.atras) {
                 fuerzaPedroZ = -personaje.masa * factorFuerza * 2.5f;
-            }else if (personaje.derecha) {
-                if(posX<12 && posZ>8 && !casaEliminada) fuerzaPedroX = personaje.masa * (factorFuerza+0.5f) * 2.5f;
-                else fuerzaPedroX = -personaje.masa * factorFuerza * 2.5f;
-            }else if (personaje.izquierda) {
+            } else if (personaje.derecha) {
+                if (posX < 12 && posZ > 8 && !casaEliminada) {
+                    fuerzaPedroX = personaje.masa * (factorFuerza + 0.5f) * 2.5f;
+                } else {
+                    fuerzaPedroX = -personaje.masa * factorFuerza * 2.5f;
+                }
+            } else if (personaje.izquierda) {
                 fuerzaPedroX = personaje.masa * factorFuerza * 2.5f;
             }
-//            if (personaje.corriendo) {
-//                fuerzaElevacion *= 2;
-//            }
             if (!personaje.parar) {
                 personaje.cuerpoRigido.applyCentralForce(new Vector3f(fuerzaPedroX, 0, fuerzaPedroZ));
             } else {
@@ -320,7 +341,6 @@ public class BigMind extends JFrame implements Runnable {
             }
         } catch (Exception e) {
         }
-
         this.mostrandoFisicas = true;
         try {
             if ((mundoFisico.getCollisionObjectArray().size() != 0) && (listaObjetosFisicosInteligentes.size() != 0)) {
@@ -337,10 +357,17 @@ public class BigMind extends JFrame implements Runnable {
         } catch (Exception e) {
         }
         this.mostrandoFisicas = false;
+
         //MOSTRAR CÁMARA
-        Point3d objetivo = new Point3d(personaje.posiciones[0], personaje.posiciones[1], personaje.posiciones[2]);
-        Point3d posicion = new Point3d(personaje.posiciones[0], personaje.posiciones[1] + 7, (personaje.posiciones[2] - 13));
-        colocarCamaraDinamico(posicion, objetivo);
+        if (!victoria && !derrota) {
+            Point3d objetivo = new Point3d(personaje.posiciones[0], personaje.posiciones[1], personaje.posiciones[2]);
+            Point3d posicion = new Point3d(personaje.posiciones[0], personaje.posiciones[1] + 7, (personaje.posiciones[2] - 13));
+            colocarCamaraDinamico(posicion, objetivo);
+        } else if (victoria) {
+            juegoSuperado();
+        } else if (derrota) {
+            juegoFracasado();
+        }
     }
 
     public void run() {
@@ -382,7 +409,7 @@ public class BigMind extends JFrame implements Runnable {
             String strLinea;
             // Leer el archivo linea por linea
             while ((strLinea = buffer.readLine()) != null) {
-                // Imprimimos la línea por pantalla
+                //Imprimimos la línea por pantalla
                 //System.out.println (strLinea);
                 escena = escena + strLinea;
             }
@@ -710,7 +737,7 @@ public class BigMind extends JFrame implements Runnable {
 
 
         } catch (Exception ex) {
-            Logger.getLogger(BigMind.class
+            Logger.getLogger(ProjectExplosion.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -722,12 +749,12 @@ public class BigMind extends JFrame implements Runnable {
         final BranchGroup conjunto;
         final ArrayList<CreacionMapas.Figura> listaObjetosFisicos;
         DiscreteDynamicsWorld mundoFisico = null;
-        final BigMind juego;
+        final ProjectExplosion juego;
         int maxEsferas;
         boolean mdl;
         float radio;
 
-        public HebraCreadora(int maxEsferas, float radio, BranchGroup conjunto, ArrayList<CreacionMapas.Figura> listaObjetosFisicos, boolean mdl, BigMind j, DiscreteDynamicsWorld mundoFisico) {
+        public HebraCreadora(int maxEsferas, float radio, BranchGroup conjunto, ArrayList<CreacionMapas.Figura> listaObjetosFisicos, boolean mdl, ProjectExplosion j, DiscreteDynamicsWorld mundoFisico) {
             this.conjunto = conjunto;
             this.listaObjetosFisicos = listaObjetosFisicos;
             this.mundoFisico = mundoFisico;
@@ -737,6 +764,7 @@ public class BigMind extends JFrame implements Runnable {
             this.radio = radio;
         }
 
+        @Override
         public void run() {
             int numEsferas = 0;
             try {

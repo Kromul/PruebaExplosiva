@@ -10,16 +10,18 @@ import javax.media.j3d.WakeupOnElapsedFrames;
 public class ComportamientoMostrar extends Behavior {
 
     WakeupOnElapsedFrames framewake = new WakeupOnElapsedFrames(0, true);
-    BigMind juego;
+    ProjectExplosion juego;
 
-    public ComportamientoMostrar(BigMind juego_) {
+    public ComportamientoMostrar(ProjectExplosion juego_) {
         juego = juego_;
     }
 
+    @Override
     public void initialize() {
         wakeupOn(framewake);
     }
 
+    @Override
     public void processStimulus(Enumeration criteria) {
         try {
             juego.mostrar();

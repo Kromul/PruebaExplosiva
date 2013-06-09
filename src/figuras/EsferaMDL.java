@@ -6,7 +6,6 @@ import Libreria3D.MiLibreria3D;
 import com.bulletphysics.collision.dispatch.*;
 import com.bulletphysics.collision.shapes.*;
 import com.sun.j3d.loaders.Scene;
-import com.sun.j3d.utils.geometry.Sphere;
 import java.net.URL;
 import java.util.ArrayList;
 import javax.media.j3d.*;
@@ -15,7 +14,7 @@ import net.sf.nwn.loader.AnimationBehavior;
 import net.sf.nwn.loader.NWNLoader;
 
 /**
- * @author Alejandro Ruiz Moyano
+ * @author Alejandro Ruiz
  */
 public class EsferaMDL extends Figura {
 
@@ -25,7 +24,7 @@ public class EsferaMDL extends Figura {
     Vector3d direccion = new Vector3d(0, 0, 10);
     public float radio, alturaP, alturaDeOjos;
 
-    public EsferaMDL(String ficheroMDL, float radio, BranchGroup conjunto, ArrayList<Figura> listaObjetos, BigMind juego) {
+    public EsferaMDL(String ficheroMDL, float radio, BranchGroup conjunto, ArrayList<Figura> listaObjetos, ProjectExplosion juego) {
         super(conjunto, listaObjetos, juego);
         esMDL = true;
         //Creando una apariencia
@@ -36,12 +35,9 @@ public class EsferaMDL extends Figura {
         apariencia.setTextureAttributes(texAttr);
 
         //Creacion de la forma visual MDL
-        //nombre = "figura_MDL_" + identificador;
-        Node figuraVisual = new Sphere(radio);
-        figuraVisual = MiLibreria3D.rotarEstatico(
+        Node figuraVisual = MiLibreria3D.rotarEstatico(
                 MiLibreria3D.getOBJ(System.getProperty("user.dir") + "/" + "src/resources/objetosOBJ/" + "naturaleza" + "/" + "asteroid" + ".obj").getSceneGroup(),
                 270, MiLibreria3D.tipoTrans.enZ);
-//        TransformGroup figuraVisual = crearObjetoMDL(ficheroMDL, radio * 2);
         SphereShape figuraFisica = new SphereShape(radio);
         ramaFisica = new CollisionObject();
         ramaFisica.setCollisionShape(figuraFisica);
@@ -110,7 +106,6 @@ public class EsferaMDL extends Figura {
                 alturaDeOjos = alturaP * escalaTamano;
             }
         } catch (Exception exc) {
-            exc.printStackTrace();
             System.out.println("Error during load Dire_Cat.mdl");
         }
 

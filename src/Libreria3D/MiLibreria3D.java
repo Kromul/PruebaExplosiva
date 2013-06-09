@@ -33,9 +33,16 @@ import com.sun.j3d.utils.behaviors.vp.OrbitBehavior;
 import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.geometry.Sphere;
+import com.sun.j3d.utils.geometry.Text2D;
 import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
+import java.awt.Font;
+import javax.media.j3d.PolygonAttributes;
 
+/**
+ * @author Pedro Reyes
+ * @author Alejandro Ruiz
+ */
 public class MiLibreria3D {
 
     public static enum tipoTrans {
@@ -458,5 +465,39 @@ public class MiLibreria3D {
         resultado = (float) Math.sqrt(resultado);
 
         return resultado;
+    }
+
+    public static Color3f obtenerColor(String hex) {
+        Color3f resultado;
+        float color1, color2, color3;
+        color1 = (float) Integer.parseInt(hex.substring(0, 2), 16) / 255f;
+        color2 = (float) Integer.parseInt(hex.substring(2, 4), 16) / 255f;
+        color3 = (float) Integer.parseInt(hex.substring(4, 6), 16) / 255f;
+
+        resultado = new Color3f(color1, color2, color3);
+
+        return resultado;
+    }
+
+    public static TransformGroup crearTextoFinal(String texto, boolean victoria) {
+        TransformGroup tgTexto = new TransformGroup();
+        tgTexto.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        tgTexto.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+
+        //Creación del texto
+        Text2D text;
+        if (victoria) {
+            text = new Text2D(texto, obtenerColor("001eff"), "Onyx", 500, Font.PLAIN);
+        } else {
+            text = new Text2D(texto, obtenerColor("ff0000"), "Onyx", 500, Font.PLAIN);
+        }
+        text.setName(texto.toLowerCase());
+        PolygonAttributes polyAttrib = new PolygonAttributes();
+        polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
+        polyAttrib.setBackFaceNormalFlip(true);
+        text.getAppearance().setPolygonAttributes(polyAttrib);
+        tgTexto.addChild(text);
+
+        return tgTexto;
     }
 }

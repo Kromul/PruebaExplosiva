@@ -10,12 +10,12 @@ import javax.vecmath.Point3d;
 
 public class SeleccionadorRaton extends PickMouseBehavior {
 
+    //Atributos
     BranchGroup conjunto;
-    BigMind juego;
+    ProjectExplosion juego;
     boolean lanzado;
 
-    //Atributos
-    public SeleccionadorRaton(Canvas3D canvas, BranchGroup bg, BigMind juego) {
+    public SeleccionadorRaton(Canvas3D canvas, BranchGroup bg, ProjectExplosion juego) {
         super(canvas, bg, new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
         setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
         pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
@@ -33,8 +33,6 @@ public class SeleccionadorRaton extends PickMouseBehavior {
             String nombre = nd.getName();
             if (nombre != null && !lanzado) {
                 if (nombre.equalsIgnoreCase("Casa")) {
-                    System.out.println("Objeto seleccionado:" + nombre);
-//                HebraCreadora creadora = new HebraCreadora(70, 0.9f, juego.conjunto, juego.listaObjetosFisicos, false, this, juego.mundoFisico);
                     juego.creadora.run();
                     lanzado = true;
                     this.juego.eliminarCasa = true;

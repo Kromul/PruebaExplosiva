@@ -1,6 +1,5 @@
 package CreacionMapas;
 
-import Libreria3D.MiLibreria3D;
 import javax.media.j3d.*;
 import javax.vecmath.*;
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import com.bulletphysics.dynamics.*;
 import com.bulletphysics.linearmath.*;
 
 /**
- * @author Alejandro Ruiz Moyano
+ * @author Alejandro Ruiz
  */
 public class Figura {
 
@@ -28,18 +27,16 @@ public class Figura {
     public BranchGroup conjunto;
     DiscreteDynamicsWorld mundoFisico;
     Matrix3f matrizRotacionPersonaje = new Matrix3f();
-    BigMind juego;
-    //atributos opcionales para dotar a la figura de cierta inteligencia
+    ProjectExplosion juego;
+    //Atributos opcionales para dotar a la figura de cierta inteligencia
     public Vector3f localizacionObjetivo;
     public int estadoFigura;                    //Dependiendo del estado de la figura, su entorno, y del juego, la figura tiene un comportamiento dado.
     public int[] estadoEntornoFigura;      //El entorno alrededoar de la figura podria descrbirse con m�s de un estado. Lloviendo y tengo poca energia
     public Figura objetivo;                      //El objetivo puede ser: localizar otra figura,
-    //Si ademas, hubiera que realizar uan accion particular (ej. Dispararle, darle alimento) se necesitaria otro atributo (ej. TareaObjetivo)
     float aceleracionMuscular;
-    String direccion = "atras";
     public boolean parar = true;
 
-    public Figura(BranchGroup conjunto, ArrayList<Figura> listaObjetosFisicos, BigMind juego) {
+    public Figura(BranchGroup conjunto, ArrayList<Figura> listaObjetosFisicos, ProjectExplosion juego) {
         this.listaObjetosFisicos = listaObjetosFisicos;
         this.conjunto = conjunto;
         this.juego = juego;
@@ -108,15 +105,7 @@ public class Figura {
     }
 
     public void actualizar() {
-        //Opcional: ACTUALIZACION DEL ESTADO DE LA FIGURA Y DEL ESTADO DEL ENTORNO
-        //Para actualizar el estado de la figura:  detectar cercanias,exploraciones picking, localizacion (cuadrantes, mundos)
-        //Para actualizar el estado del entorno:  lo puede hacer la misma figura, una figura coordinara, o el mismo juego
-
-        //Opcional: ACTUALIZACION DE PLANIFICACION A LARGO PLAZAO
-        //Dependiendo del objetivo a conseguir ejecutar un plan a largo plazo
-
         //REGLAS DE MOVIMIENTO A CORTO PLAZO DE LA FIGURA DEPENDIENDO DE SU ESTADO, DEL ENTORNO Y DEL ESTADO DEL JUEGO
-        //ejemplo: C�digo de actualizar() del programa  Navegador_Tema_3
         if (localizacionObjetivo != null) {
             Vector3f direccion = new Vector3f(localizacionObjetivo.x - posiciones[0], 0f, localizacionObjetivo.z - posiciones[2]);
             direccion.normalize();                                                                           //El vector se normaliza con 1 para que indique solo la direccion.
@@ -149,57 +138,5 @@ public class Figura {
         Vector3f posPersonaje = new Vector3f(0, 0, 0);
         t3dPersonaje.get(posPersonaje);
         return new Vector3d(posSonar.x - posPersonaje.x, posSonar.y - posPersonaje.y, posSonar.z - posPersonaje.z);
-    }
-
-    void rotarAdelante() {
-        if (this.direccion.equals("atras")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 4000, 0f));
-        } else if (this.direccion.equals("izquierda")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, -this.masa * 1000, 0f));
-        } else if (this.direccion.equals("derecha")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 1000, 0f));
-        }
-        this.direccion = "adelante";
-    }
-
-    void rotarAtras() {
-        if (this.direccion.equals("adelante")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 4000, 0f));
-        } else if (this.direccion.equals("izquierda")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 1000, 0f));
-        } else if (this.direccion.equals("derecha")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, -this.masa * 1000, 0f));
-        }
-        this.direccion = "atras";
-    }
-
-    void rotarDerecha() {
-        if (this.direccion.equals("atras")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 1000, 0f));
-        } else if (this.direccion.equals("izquierda")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, this.masa * 4000, 0f));
-        } else if (this.direccion.equals("adelante")) {
-            this.cuerpoRigido.applyTorque(new Vector3f(0f, -this.masa * 1000, 0f));
-        }
-        this.direccion = "derecha";
-    }
-
-    void rotarIzquierda() {
-        Transform3D nueva = new Transform3D();
-        Transform3D actual = new Transform3D();
-        this.desplazamientoFigura.getTransform(actual);
-        if (this.direccion.equals("atras")) {
-            nueva = MiLibreria3D.rotarDinamico(MiLibreria3D.tipoTrans.enY, -90);
-            //this.cuerpoRigido.applyTorqueImpulse(new Vector3f(0f, -this.masa * 4, 0f));
-        } else if (this.direccion.equals("adelante")) {
-            nueva = MiLibreria3D.rotarDinamico(MiLibreria3D.tipoTrans.enY, 90);
-            //this.cuerpoRigido.applyTorqueImpulse(new Vector3f(0f, this.masa * 4, 0f));
-        } else if (this.direccion.equals("derecha")) {
-            nueva = MiLibreria3D.rotarDinamico(MiLibreria3D.tipoTrans.enY, 180);
-            //this.cuerpoRigido.applyTorqueImpulse(new Vector3f(0f, this.masa * 8, 0f));
-        }
-        nueva.mul(actual);
-        this.desplazamientoFigura.setTransform(nueva);
-        this.direccion = "izquierda";
     }
 }
