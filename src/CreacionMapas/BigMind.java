@@ -76,6 +76,7 @@ public class BigMind extends JFrame implements Runnable {
     HebraCreadora creadora;
     BranchGroup casaVisual;
     boolean eliminarCasa;
+    boolean casaEliminada;
     TransformGroup casaVisualTG;
 
     public BigMind() {
@@ -110,7 +111,7 @@ public class BigMind extends JFrame implements Runnable {
 
         MiLibreria3D.addMovimientoCamara(universo, zonaDibujo);
         MiLibreria3D.colocarCamara(universo, new Point3d(-15, 10, 18), new Point3d(0, 0, 0));
-        
+
         hebra.start();
     }
 
@@ -157,7 +158,7 @@ public class BigMind extends JFrame implements Runnable {
         }
         rootBG.addChild(MiLibreria3D.CrearEjesCoordenada());
         rootBG.addChild(MiLibreria3D.getDefaultIlumination());
-        rootBG.addChild(MiLibreria3D.trasladarEstatico(MiLibreria3D.CrearEjesCoordenada(), new Vector3f(10f, 0f, 0f)));
+        rootBG.addChild(MiLibreria3D.trasladarEstatico(MiLibreria3D.CrearEjesCoordenada(), new Vector3f(12f, 0f, 8f)));
         rootBG.addChild(MiLibreria3D.trasladarEstatico(MiLibreria3D.CrearEjesCoordenada(), new Vector3f(0, 0f, 12f)));
 
         //Caja detección casa
@@ -180,6 +181,7 @@ public class BigMind extends JFrame implements Runnable {
         // hago una variable para la casa para borrarla cuando el asteroide choque con ella
         float escala = 2.5f;
         eliminarCasa = false;
+        casaEliminada = false;
         casaVisualTG = new TransformGroup();
         casaVisualTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         casaVisualTG.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
@@ -190,11 +192,11 @@ public class BigMind extends JFrame implements Runnable {
         casaVisual.setCapability(BranchGroup.ALLOW_DETACH);
         try {
             casaVisual = MiLibreria3D.crear(
-                                new Vector3f(0.0f, 0.0f, 0.0f),
-                                MiLibreria3D.tipoFigura.objetoOBJ, null, null, null,
-                                null,
-                                System.getProperty("user.dir") + "/" + "src/resources/objetosOBJ/" + "edificios" + "/" + "granero" + ".obj",
-                                escala);
+                    new Vector3f(0.0f, 0.0f, 0.0f),
+                    MiLibreria3D.tipoFigura.objetoOBJ, null, null, null,
+                    null,
+                    System.getProperty("user.dir") + "/" + "src/resources/objetosOBJ/" + "edificios" + "/" + "granero" + ".obj",
+                    escala);
         } catch (Exception ex) {
             Logger.getLogger(BigMind.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -206,7 +208,7 @@ public class BigMind extends JFrame implements Runnable {
                 casaVisual,
                 new Vector3f(2 + (ancho * escala), 0 + (alto * escala), 9 + (largo * escala))));
         rootBG.addChild(casaVisualTG);
-        
+
         return rootBG;
     }
 
@@ -240,14 +242,14 @@ public class BigMind extends JFrame implements Runnable {
     void actualizar(float dt) {
         //ACTUALIZAR EL ESTADO DEL JUEGO
 //        try{
-        if(eliminarCasa){
-            eliminarCasa = false;
+        if (eliminarCasa) {
             System.out.println("==================");
             System.out.println("CASA ELIMINADA");
             System.out.println("==================");
-            
+            casaEliminada = true;
+            eliminarCasa = false;
             Transform3D t = new Transform3D();
-            t.set(new Vector3d(0d,-10d,0d));
+            t.set(new Vector3d(0d, -10d, 0d));
             casaVisualTG.setTransform(t);
         }
         bala.actualizar(posInicialBala, new Vector3f(personaje.posiciones));
@@ -260,44 +262,25 @@ public class BigMind extends JFrame implements Runnable {
             float fuerzaElevacion = 0, fuerzaLateral = 0;
             float fuerzaPedroZ = 0, fuerzaPedroX = 0;
             float factorFuerza = 4;
-            if (personaje.adelante) {
-                //personaje.rotarAdelante();
-                fuerzaElevacion = personaje.masa * 2f * 2.5f;
-                fuerzaPedroZ = personaje.masa * factorFuerza * 2.5f;
-            }
-            if (personaje.atras) {
-                fuerzaElevacion = -personaje.masa * 2f * 2.5f;
-                /*
-                 personaje.rotarAtras();
-                 fuerzaElevacion = personaje.masa * 2f * 2.5f;
-                 */
-                fuerzaPedroZ = -personaje.masa * factorFuerza * 2.5f;
-            }
-            if (personaje.derecha) {
-                fuerzaLateral = -personaje.masa * 4f;
-                /*
-                 personaje.rotarDerecha();
-                 fuerzaElevacion = personaje.masa * 2f * 2.5f;
-                 */
-                fuerzaPedroX = -personaje.masa * factorFuerza * 2.5f;
-            }
-            if (personaje.izquierda) {
-                //fuerzaLateral = personaje.masa * 4f;
+            float posX = personaje.posiciones[0];
+            float posZ = personaje.posiciones[2];
 
-                personaje.rotarIzquierda();
-                fuerzaElevacion = personaje.masa * 2f * 2.5f;
+            if (personaje.adelante) {
+                fuerzaPedroZ = personaje.masa * factorFuerza * 2.5f;
+            }else if (personaje.atras) {
+                fuerzaPedroZ = -personaje.masa * factorFuerza * 2.5f;
+            }else if (personaje.derecha) {
+                if(posX<12 && posZ>8 && !casaEliminada) fuerzaPedroX = personaje.masa * (factorFuerza+0.5f) * 2.5f;
+                else fuerzaPedroX = -personaje.masa * factorFuerza * 2.5f;
+            }else if (personaje.izquierda) {
                 fuerzaPedroX = personaje.masa * factorFuerza * 2.5f;
             }
-            if (personaje.corriendo) {
-                fuerzaElevacion *= 2;
-            }
+//            if (personaje.corriendo) {
+//                fuerzaElevacion *= 2;
+//            }
             if (!personaje.parar) {
-                Vector3d direccionFrente = personaje.conseguirDireccionFrontal();
-//Alex-->                personaje.cuerpoRigido.applyCentralForce(new Vector3f((float) direccionFrente.x * fuerzaElevacion * 0.1f, 0, (float) direccionFrente.z * fuerzaElevacion * 0.1f));
                 personaje.cuerpoRigido.applyCentralForce(new Vector3f(fuerzaPedroX, 0, fuerzaPedroZ));
-//                personaje.cuerpoRigido.applyTorque(new Vector3f(0, fuerzaLateral, 0));
             } else {
-                //System.out.println("parado");
                 personaje.cuerpoRigido.clearForces();
             }
         }
@@ -769,7 +752,7 @@ public class BigMind extends JFrame implements Runnable {
             Figura fig;
             fig = new EsferaMDL("src/resources/objetosOBJ/ataques/war_axe.obj", radio, conjunto, listaObjetosFisicos, juego);
             if (!juego.actualizandoFisicas) {
-                fig.crearPropiedades(masa, elasticidad, dumpingLineal, 4, 10, 11, mundoFisico);
+                fig.crearPropiedades(masa, elasticidad, dumpingLineal, 4, 5, 11, mundoFisico);
             }
         }
     }

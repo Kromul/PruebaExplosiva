@@ -45,44 +45,4 @@ public class SeleccionadorRaton extends PickMouseBehavior {
             }
         }
     }
-
-    class HebraCreadora extends Thread {
-
-        final BranchGroup conjunto;
-        final ArrayList<CreacionMapas.Figura> listaObjetosFisicos;
-        DiscreteDynamicsWorld mundoFisico = null;
-        final BigMind juego;
-        int maxEsferas;
-        boolean mdl;
-        float radio;
-
-        public HebraCreadora(int maxEsferas, float radio, BranchGroup conjunto, ArrayList<CreacionMapas.Figura> listaObjetosFisicos, boolean mdl, BigMind j, DiscreteDynamicsWorld mundoFisico) {
-            this.conjunto = conjunto;
-            this.listaObjetosFisicos = listaObjetosFisicos;
-            this.mundoFisico = mundoFisico;
-            this.juego = j;
-            this.maxEsferas = maxEsferas;
-            this.mdl = mdl;
-            this.radio = radio;
-        }
-
-        public void run() {
-            int numEsferas = 0;
-            try {
-                Thread.sleep(10);
-            } catch (Exception e) {
-            }
-//            while (numEsferas <= maxEsferas) {
-            float elasticidad = 0.5f;
-            float dumpingLineal = 0.5f;
-            float masa = 5;
-//                for (float x = 3; x >= -3; x = x - 2f) {
-//                    numEsferas++;
-            Figura fig;
-            fig = new figuras.EsferaMDL("src/resources/objetosOBJ/ataques/war_axe.obj", radio, conjunto, listaObjetosFisicos, juego);
-            if (!juego.actualizandoFisicas) {
-                fig.crearPropiedades(masa, elasticidad, dumpingLineal, 4, 6, 11, mundoFisico);
-            }
-        }
-    }
 }
